@@ -2,6 +2,8 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import styles from '../Registration/styles';
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
 
@@ -58,6 +60,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       </TouchableOpacity>
       <View>
         <Text style={styles.footerText}>No tengo una cuenta.<Text onPress={onFooterLinkPress} style={styles.footerLink}> Crear una nueva</Text></Text>
+        <Button title="Solid Button"/>
       </View>
     </View>
   );
