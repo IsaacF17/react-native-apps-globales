@@ -4,7 +4,8 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "prettier": "prettier --write src/**/*.{js,jsx,ts,tsx,json,css,scss,md} ./*.{js,jsx,ts,tsx,json,css,scss,md}"
   },
   "husky": {
     "hooks": {
@@ -13,6 +14,9 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ],
+    "./*{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier --write"
     ]
   },
