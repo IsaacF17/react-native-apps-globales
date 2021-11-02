@@ -14,9 +14,7 @@ const useToggleButtonGroup = (props: IUseToggleButtonGroup) => {
   );
 
   const safeSetSelectedIndex = (newState: Array<number>) => {
-    if (safeToggle && newState.length >= 1) {
-      setSelectedIndexes(newState);
-    } else if (!safeToggle) {
+    if (!safeToggle || newState.length >= 1) {
       setSelectedIndexes(newState);
     }
   };

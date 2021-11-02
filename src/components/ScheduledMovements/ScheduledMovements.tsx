@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import styles from './styles';
 import GlobalContext from '../../contexts/GlobalContext';
 import IconButton from '../common/Buttons/IconButton/IconButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchBar from 'react-native-dynamic-search-bar';
 import useToggleButtonGroup from '../../hooks/useToggleButtonGroup';
+import MovementItem from './MovementItem/MovementItem';
 
 export interface IScheduledMovements {}
 
@@ -34,6 +35,24 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
     console.log(selectedTypes);
   }, [selectedTypes]);
 
+  const testData = [
+    { name: 'Netflix', value: '-₡8000', nextDate: '01/10/21' },
+    { name: 'Salario', value: '₡745000', nextDate: '01/10/21' },
+    { name: 'Gym', value: '-₡18000', nextDate: '01/10/21' },
+    { name: 'Netflix', value: '-₡8000', nextDate: '01/10/21' },
+    { name: 'Salario', value: '₡745000', nextDate: '01/10/21' },
+    { name: 'Gym', value: '-₡18000', nextDate: '01/10/21' },
+    { name: 'Netflix', value: '-₡8000', nextDate: '01/10/21' },
+    { name: 'Salario', value: '₡745000', nextDate: '01/10/21' },
+    { name: 'Gym', value: '-₡18000', nextDate: '01/10/21' },
+    { name: 'Netflix', value: '-₡8000', nextDate: '01/10/21' },
+    { name: 'Salario', value: '₡745000', nextDate: '01/10/21' },
+    { name: 'Gym', value: '-₡18000', nextDate: '01/10/21' },
+    { name: 'Netflix', value: '-₡8000', nextDate: '01/10/21' },
+    { name: 'Salario', value: '₡745000', nextDate: '01/10/21' },
+    { name: 'Gym', value: '-₡18000', nextDate: '01/10/21' },
+  ];
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.mainContainer}>
@@ -59,7 +78,23 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
           {/* @ts-ignore */}
           <ToggleButtonGroup />
         </View>
-        <View style={{ flex: 8, backgroundColor: 'yellow' }}></View>
+        <View style={styles.tableContainer}>
+          <View style={styles.tableHeader}>
+            <Text style={styles.tableHeadings}>Nombre</Text>
+            <Text style={styles.tableHeadings}>Monto</Text>
+            <Text style={styles.tableHeadings}>Próximo</Text>
+          </View>
+          <ScrollView style={styles.tableScrollView}>
+            {testData.map((item, index) => (
+              <MovementItem
+                key={`scheduled-movement-${index}`}
+                name={item.name}
+                value={item.value}
+                nextDate={item.nextDate}
+              />
+            ))}
+          </ScrollView>
+        </View>
       </View>
     </SafeAreaView>
   );
