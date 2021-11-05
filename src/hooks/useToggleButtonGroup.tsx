@@ -19,7 +19,7 @@ const useToggleButtonGroup = (props: IUseToggleButtonGroup) => {
     }
   };
 
-  const Component: React.FC = () => (
+  const Component = (
     <ToggleButtonGroup
       buttons={buttons}
       selectedIndexes={selectedIndexes}

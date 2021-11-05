@@ -68,16 +68,13 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
         </View>
         <View style={styles.searchBarContainer}>
           <SearchBar
-            placeholder="Type Here..."
+            placeholder="Escriba para buscar..."
             onChangeText={(newSearch: string) => {
               setCurrentSearch(newSearch);
             }}
           />
         </View>
-        <View style={styles.filersContainer}>
-          {/* @ts-ignore */}
-          <ToggleButtonGroup />
-        </View>
+        <View style={styles.filersContainer}>{ToggleButtonGroup}</View>
         <View style={styles.tableContainer}>
           <View style={styles.tableHeader}>
             <Text style={styles.tableHeadings}>Nombre</Text>

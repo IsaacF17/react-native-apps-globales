@@ -5,6 +5,7 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "eject": "expo eject",
+    "lint": "eslint ./src",
     "prettier": "prettier --write src/**/*.{js,jsx,ts,tsx,json,css,scss,md} ./*.{js,jsx,ts,tsx,json,css,scss,md}"
   },
   "husky": {
@@ -14,10 +15,14 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write"
+      "eslint",
+      "prettier --write",
+      "git add"
     ],
     "./*{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write"
+      "eslint",
+      "prettier --write",
+      "git add"
     ]
   },
   "dependencies": {
@@ -58,6 +63,12 @@
     "@types/lodash": "^4.14.176",
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.64.12",
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.1.0",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-native": "^3.11.0",
     "husky": "^4.3.8",
     "lint-staged": "^11.2.6",
     "prettier": "^2.4.1",

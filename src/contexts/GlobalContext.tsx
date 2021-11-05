@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 export interface IGlobalContext {
   test: string;
-  setTest?: Function;
+  setTest?: Dispatch<SetStateAction<string>>;
 }
 
 export default React.createContext<IGlobalContext>({} as IGlobalContext);
