@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import ToggleButtonGroup from '../components/common/Buttons/ToggleButtonGroup/ToggleButtonGroup';
 
 export interface IUseToggleButtonGroup {
@@ -7,8 +7,17 @@ export interface IUseToggleButtonGroup {
   initialSelectedIndexes?: Array<number>;
 }
 
-const useToggleButtonGroup = (props: IUseToggleButtonGroup) => {
+export type IUseToggleButtonGroupReturn = [
+  ReactElement,
+  Array<number>,
+  (newState: Array<number>) => void,
+];
+
+const useToggleButtonGroup = (
+  props: IUseToggleButtonGroup,
+): IUseToggleButtonGroupReturn => {
   const { buttons, safeToggle, initialSelectedIndexes } = props;
+
   const [selectedIndexes, setSelectedIndexes] = useState<Array<number>>(
     initialSelectedIndexes || [],
   );
@@ -19,7 +28,7 @@ const useToggleButtonGroup = (props: IUseToggleButtonGroup) => {
     }
   };
 
-  const Component = (
+  const Component: ReactElement = (
     <ToggleButtonGroup
       buttons={buttons}
       selectedIndexes={selectedIndexes}

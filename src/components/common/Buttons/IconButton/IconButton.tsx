@@ -3,6 +3,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 import { Button, ButtonProps } from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { IconProps } from 'react-native-vector-icons/Icon';
+
 import styles from './styles';
 
 export interface IIconButton {
