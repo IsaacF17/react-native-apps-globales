@@ -5,10 +5,13 @@ const GlobalContextProvider: React.FC = props => {
   const { children } = props;
 
   const [test, setTest] = useState<string>("This is the initial 'test' value");
+  const [user, setUser] = useState({});
 
   const contextValue: IGlobalContext = {
     test,
     setTest,
+    user,
+    setUser,
   };
 
   return (
