@@ -68,8 +68,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       )}
       <Button
         title="Iniciar Sesión"
-        onPress={handleSubmit(data => onSubmit(data))}
-      ></Button>
+        onPress={handleSubmit(data => onSubmit(data))}></Button>
       <View>
         <Text style={styles.footerText}>
           Utiliza tu cuenta de

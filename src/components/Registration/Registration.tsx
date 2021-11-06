@@ -114,8 +114,7 @@ export const RegistrationScreen = ({ navigation }: { navigation: any }) => {
       )}
       <TouchableOpacity
         style={styles.button}
-        onPress={handleSubmit(data => onSubmit(data))}
-      >
+        onPress={handleSubmit(data => onSubmit(data))}>
         <Text style={styles.buttonTitle}>Crear cuenta</Text>
       </TouchableOpacity>
       <View>

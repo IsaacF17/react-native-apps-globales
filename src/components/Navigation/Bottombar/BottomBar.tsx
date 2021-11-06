@@ -15,8 +15,7 @@ export function BottomBar() {
       activeColor="white"
       barStyle={{
         backgroundColor: '#1E2749',
-      }}
-    >
+      }}>
       <Tab.Screen
         name="Inicio"
         component={HomeScreen}
