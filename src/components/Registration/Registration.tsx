@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { Controller, useForm } from 'react-hook-form';
-import { add } from '../../firebase/Usuarios';
+import { add } from '../../firebase/Users';
 import { omit } from 'lodash';
 
 export const RegistrationScreen = ({ navigation }: { navigation: any }) => {
+  //const { test } = React.useContext(GlobalContextProvider);
+
   const {
     control,
     handleSubmit,
@@ -15,7 +17,8 @@ export const RegistrationScreen = ({ navigation }: { navigation: any }) => {
   const onSubmit = async (data: any) => {
     const userData = omit(data, ['confirmPass']);
     const res = await add(userData);
-    if (res) console.log('Cool');
+    if (res) navigation.navigate('Inicio');
+    else console.log('Email ya está en uso');
   };
 
   const onFooterLinkPress = () => {
@@ -40,8 +43,9 @@ export const RegistrationScreen = ({ navigation }: { navigation: any }) => {
         rules={{ required: true }}
         defaultValue=""
       />
-      {errors.nombre && <Text style={styles.error}>Este campo es requerido.</Text>}
-
+      {errors.nombre && (
+        <Text style={styles.error}>Este campo es requerido.</Text>
+      )}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -67,8 +71,9 @@ export const RegistrationScreen = ({ navigation }: { navigation: any }) => {
         }}
         defaultValue=""
       />
-      {errors.email && <Text style={styles.error}>{errors?.email?.message}</Text>}
-
+      {errors.email && (
+        <Text style={styles.error}>{errors?.email?.message}</Text>
+      )}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -107,7 +112,10 @@ export const RegistrationScreen = ({ navigation }: { navigation: any }) => {
       {errors.confirmPass?.type === 'required' && (
         <Text style={styles.error}>Este campo es requerido</Text>
       )}
-      <TouchableOpacity style={styles.button} onPress={handleSubmit(data => onSubmit(data))}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleSubmit(data => onSubmit(data))}
+      >
         <Text style={styles.buttonTitle}>Crear cuenta</Text>
       </TouchableOpacity>
       <View>

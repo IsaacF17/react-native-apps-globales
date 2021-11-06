@@ -3,15 +3,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { View, Text, TextInput } from 'react-native';
 import styles from '../Registration/styles';
 import { Button } from 'react-native-elements';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { checkUserData } from '../../firebase/Users';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
-  //enable google sing in configuration
-  GoogleSignin.configure({
-    webClientId:
-      '413467188114-lo4s4kqhpa8ii1naffkd3qktc29ohgpi.apps.googleusercontent.com',
-  });
-
   const {
     control,
     handleSubmit,
@@ -19,6 +13,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   } = useForm();
 
   const onSubmit = async (data: any) => {
+    const canLogIn = await checkUserData(data.email, data.pass);
+    console.log(canLogIn);
     navigation.navigate('Home');
   };
 
