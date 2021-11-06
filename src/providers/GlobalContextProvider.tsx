@@ -6,6 +6,7 @@ import { IMovement } from '../types/movements';
 const GlobalContextProvider: React.FC = props => {
   const { children } = props;
 
+  const [user, setUser] = useState({});
   const [testMovementsData, setTestMovementsData] = useState<Array<IMovement>>([
     { type: 'expense', name: 'Netflix', value: 8000, nextDate: '01/10/21' },
     { type: 'income', name: 'Salario', value: 745000, nextDate: '01/10/21' },
@@ -44,6 +45,8 @@ const GlobalContextProvider: React.FC = props => {
     setTestMovementsData,
     testCategoryList,
     setTestCategoryList,
+    user,
+    setUser,
   };
 
   return (
