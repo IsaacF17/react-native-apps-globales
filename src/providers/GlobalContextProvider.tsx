@@ -15,7 +15,7 @@ const GlobalContextProvider: React.FC = props => {
   };
 
   return (
-    <GlobalContext.Provider value={{ ...contextValue }}>
+    <GlobalContext.Provider value={contextValue}>
       {children}
     </GlobalContext.Provider>
   );

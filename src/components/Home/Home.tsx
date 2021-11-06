@@ -22,41 +22,6 @@ const today = [
   },
 ];
 
-const week = [
-  {
-    name: 'Veterinario',
-    avatar_url:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-    value: '-35.000',
-    type: 'G',
-  },
-  {
-    name: 'PS5',
-    avatar_url:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-    value: '-500.000',
-    type: 'G',
-  },
-  {
-    name: 'Salario',
-    avatar_url:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-    value: '1.500.000',
-    type: 'I',
-  },
-  {
-    name: 'SIUU',
-    avatar_url:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-    value: '150.000',
-    type: 'I',
-  },
-];
-
-function test(arg: string) {
-  console.log('TEST', arg);
-}
-
 const HomeScreen = ({ navigation }: { navigation: any }) => (
   <View style={{ flex: 1 }}>
     <Header />
