@@ -9,7 +9,7 @@ import styles from './styles';
 export interface IIconButton {
   name: string;
   style?: StyleProp<ViewStyle>;
-  iconProps?: IconProps;
+  iconProps?: Partial<IconProps>;
   onPress?: (event: Event) => void;
 }
 
@@ -19,7 +19,7 @@ const IconButton: React.FC<IIconButton & ButtonProps> = props => {
 
   const { name, style, iconProps, onPress } = buttonPlusProps;
 
-  const plusIcon = <Icon size={30} color={'#fff'} {...iconProps} name={name} />;
+  const plusIcon = <Icon name={name} size={30} color={'#fff'} {...iconProps} />;
 
   return (
     <Button

@@ -47,7 +47,7 @@ export function BottomBar() {
       />
       <Tab.Screen
         name="Nuevo"
-        component={Categories}
+        component={HomeScreen}
         options={{
           tabBarIcon: () => (
             <Icon

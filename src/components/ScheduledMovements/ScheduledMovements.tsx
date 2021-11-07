@@ -1,15 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import GlobalContext from '../../contexts/GlobalContext';
-import IconButton from '../common/Buttons/IconButton/IconButton';
+import Modal from 'react-native-modal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchBar from 'react-native-dynamic-search-bar';
 import useToggleButtonGroup, {
   IUseToggleButtonGroupReturn,
 } from '../../hooks/useToggleButtonGroup';
-import MovementItem from './MovementItem/MovementItem';
-import { IMovement } from '../../types/movements';
 import { toNumber } from 'lodash';
+import IconButton from '../common/Buttons/IconButton/IconButton';
+import { IMovement } from '../../types/movements';
+import MovementItem from './MovementItem/MovementItem';
+import AddNewMovement from '../AddNewMovement/AddNewMovement';
+import GlobalContext from '../../contexts/GlobalContext';
 
 import styles from './styles';
 
@@ -22,6 +24,7 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
 
   const [movementList, setMovementList] = useState<Array<IMovement>>([]);
   const [currentSearch, setCurrentSearch] = useState<string>('');
+  const [isAddNewOverlayOpen, setIsAddNewOverlayOpen] = useState(false);
 
   const [ToggleButtonGroup, selectedTypes]: IUseToggleButtonGroupReturn =
     useToggleButtonGroup({
@@ -29,10 +32,6 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
       safeToggle: true,
       initialSelectedIndexes: [0, 1],
     });
-
-  const addNewHandler = (event: Event) => {
-    console.log('TODO: open modal to create new income/expense');
-  };
 
   useEffect(() => {
     let filteredList: Array<IMovement> = testMovementsData;
@@ -58,7 +57,7 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
             <IconButton
               name="plus"
               style={styles.headerAddButton}
-              onPress={addNewHandler}
+              onPress={() => setIsAddNewOverlayOpen(true)}
             />
           </View>
         </View>
@@ -99,6 +98,15 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
           </ScrollView>
         </View>
       </View>
+      <Modal
+        style={styles.addNewMovementModal}
+        isVisible={isAddNewOverlayOpen}
+        animationIn="slideInDown"
+        animationOut="slideOutDown"
+        backdropOpacity={0}
+        onBackdropPress={() => setIsAddNewOverlayOpen(false)}>
+        <AddNewMovement />
+      </Modal>
     </SafeAreaView>
   );
 };
