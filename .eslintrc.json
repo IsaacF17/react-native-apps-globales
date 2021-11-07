@@ -1,5 +1,6 @@
 {
   "env": {
+    "browser": true,
     "node": true,
     "es2021": true
   },
@@ -24,6 +25,9 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/no-empty-function": "warn",
-    "no-empty": ["warn", { "allowEmptyCatch": true }]
+    "no-empty": ["warn", { "allowEmptyCatch": true }],
+    "no-cond-assign": "error",
+    "no-dupe-else-if": "error",
+    "no-duplicate-case": "error"
   }
 }

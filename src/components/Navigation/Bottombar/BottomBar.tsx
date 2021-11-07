@@ -2,8 +2,9 @@ import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import HomeScreen from '../../Home/Home';
 import { Icon } from 'react-native-elements';
-import LoginScreen from '../../Login/Login';
 import { RegistrationScreen } from '../../Registration/Registration';
+import ScheduledMovements from '../../ScheduledMovements/ScheduledMovements';
+import Categories from '../../Categories/Categories';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -32,7 +33,7 @@ export function BottomBar() {
       />
       <Tab.Screen
         name="Fijos"
-        component={LoginScreen}
+        component={ScheduledMovements}
         options={{
           tabBarIcon: () => (
             <Icon
@@ -46,7 +47,7 @@ export function BottomBar() {
       />
       <Tab.Screen
         name="Nuevo"
-        component={RegistrationScreen}
+        component={Categories}
         options={{
           tabBarIcon: () => (
             <Icon
@@ -60,7 +61,7 @@ export function BottomBar() {
       />
       <Tab.Screen
         name="Categorías"
-        component={RegistrationScreen}
+        component={Categories}
         options={{
           tabBarIcon: () => (
             <Icon
