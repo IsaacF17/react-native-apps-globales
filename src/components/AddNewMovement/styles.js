@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+const textInputHeight = 40;
+
 export default StyleSheet.create({
   mainContainer: {
     width: '80%',
@@ -56,6 +58,14 @@ export default StyleSheet.create({
   formInputNameContainer: {
     width: '100%',
   },
+  formInputPerioToggleContainer: {
+    flex: 4,
+  },
+  formInputPeriodicityContainer: {
+    flex: 6,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
   formInputDetailsContainer: {
     width: '100%',
     marginTop: 10,
@@ -66,10 +76,10 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   formInputTypeContainer: {
-    width: '40%',
+    flex: 4,
   },
   formInputValueContainer: {
-    width: '60%',
+    flex: 6,
   },
   formTextInput: {
     borderRadius: 10,
@@ -78,13 +88,25 @@ export default StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
-  formInputName: {},
+  formInputName: {
+    height: textInputHeight,
+  },
   formInputDetails: {
     textAlignVertical: 'top',
     justifyContent: 'flex-start',
   },
-  formInputType: {},
-  formInputValue: {},
+  formInputPeriodicity: {
+    height: textInputHeight,
+  },
+  formInputPeriodicityDisabled: {
+    color: 'white',
+  },
+  formInputType: {
+    height: textInputHeight,
+  },
+  formInputValue: {
+    height: textInputHeight,
+  },
   formErrorMessage: {
     paddingLeft: 5,
     color: 'red',
@@ -92,7 +114,11 @@ export default StyleSheet.create({
   buttonsContainer: {
     // width: '90%',
   },
+  toggleButton: {
+    height: textInputHeight,
+  },
   saveButton: {
+    height: textInputHeight,
     backgroundColor: '#27a02a',
     paddingVertical: 5,
     width: '100%',

@@ -33,6 +33,14 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
       initialSelectedIndexes: [0, 1],
     });
 
+  const onSubmitNewMovement = async (data: any) => {
+    console.log(
+      'TODO: Save new income/expense',
+      `Data: ${JSON.stringify(data)}`,
+    );
+    setIsAddNewOverlayOpen(false);
+  };
+
   useEffect(() => {
     let filteredList: Array<IMovement> = testMovementsData;
     if (currentSearch.length > 2) {
@@ -80,11 +88,6 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
         </View>
         <View style={styles.filersContainer}>{ToggleButtonGroup}</View>
         <View style={styles.tableContainer}>
-          {/* <View style={styles.tableHeader}>
-            <Text style={styles.tableHeadings}>Nombre</Text>
-            <Text style={styles.tableHeadings}>Monto</Text>
-            <Text style={styles.tableHeadings}>Próximo</Text>
-          </View> */}
           <ScrollView style={styles.tableScrollView}>
             {movementList.map((item, index) => (
               <MovementItem
@@ -93,6 +96,7 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
                 name={item.name}
                 value={item.value}
                 nextDate={item.nextDate}
+                periodicity={item.periodicity}
               />
             ))}
           </ScrollView>
@@ -105,7 +109,10 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
         animationOut="slideOutDown"
         backdropOpacity={0}
         onBackdropPress={() => setIsAddNewOverlayOpen(false)}>
-        <AddNewMovement />
+        <AddNewMovement
+          initialPeriocity="auto"
+          onSubmit={onSubmitNewMovement}
+        />
       </Modal>
     </SafeAreaView>
   );
