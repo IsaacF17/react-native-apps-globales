@@ -64,8 +64,8 @@
     "react-native-spinkit": "^1.5.1",
     "react-native-svg": "^12.1.1",
     "react-native-swipe-list-view": "^3.2.9",
-    "react-native-ui-lib": "^6.2.1",
     "react-native-uuid": "^2.0.1",
+    "react-native-ui-lib": "^6.3.0",
     "react-native-vector-icons": "^9.0.0",
     "react-native-web": "0.17.1"
   },

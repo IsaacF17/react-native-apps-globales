@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView } from 'react-native';
 import { View, Text } from 'react-native-ui-lib';
 import SearchBar from 'react-native-dynamic-search-bar';
 import Modal from 'react-native-modal';
@@ -9,6 +8,7 @@ import AddNewCategory from '../AddNewCategory/AddNewCategory';
 import CategoryItem from './CategoryItem/CategoryItem';
 import { ICategory } from '../../types/categories';
 import GlobalContext from '../../contexts/GlobalContext';
+import { SwipeableList } from '../SwipeableList/SwipeableList';
 
 import styles from './styles';
 
@@ -26,6 +26,11 @@ const Categories: React.FC<ICategories> = props => {
   const onSubmitNewCategory = async (data: any) => {
     console.log('TODO: Save new category', `Data: ${JSON.stringify(data)}`);
     setIsAddNewOverlayOpen(false);
+  };
+
+  const leftContent = {
+    title: 'INFO',
+    icon_name: 'info-circle',
   };
 
   useEffect(() => {
@@ -71,15 +76,12 @@ const Categories: React.FC<ICategories> = props => {
           />
         </View>
         <View style={styles.tableContainer}>
-          <ScrollView style={styles.tableScrollView}>
-            {categoryList.map((category, index) => (
-              <CategoryItem
-                key={`category-${index}`}
-                iconName={category.iconName}
-                name={category.name}
-              />
-            ))}
-          </ScrollView>
+          <SwipeableList
+            data={categoryList}
+            childComponent={CategoryItem}
+            disabledRightContent={true}
+            leftContent={leftContent}
+          />
         </View>
       </View>
       <Modal
