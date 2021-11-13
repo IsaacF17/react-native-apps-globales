@@ -20,7 +20,7 @@ export interface IScheduledMovements {}
 const ScheduledMovements: React.FC<IScheduledMovements> = props => {
   const globalContext = useContext(GlobalContext);
 
-  const { testMovementsData, setTestMovementsData } = globalContext;
+  const { testMovementsData, testCategoryList } = globalContext;
 
   const [movementList, setMovementList] = useState<Array<IMovement>>([]);
   const [currentSearch, setCurrentSearch] = useState<string>('');

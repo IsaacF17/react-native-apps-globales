@@ -43,43 +43,15 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
     margin: 10,
   },
-  dataContainer: {
-    width: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerData: {
-    fontSize: 16,
-    color: 'white',
-  },
   formContainer: {
     marginVertical: 20,
   },
   formInputNameContainer: {
     width: '100%',
   },
-  formInputPerioToggleContainer: {
-    flex: 4,
-  },
-  formInputPeriodicityContainer: {
-    flex: 6,
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
   formInputDetailsContainer: {
     width: '100%',
     marginTop: 10,
-  },
-  formMultiInputContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    marginTop: 10,
-  },
-  formInputTypeContainer: {
-    flex: 4,
-  },
-  formInputValueContainer: {
-    flex: 6,
   },
   formTextInput: {
     borderRadius: 10,
@@ -95,27 +67,15 @@ export default StyleSheet.create({
     textAlignVertical: 'top',
     justifyContent: 'flex-start',
   },
-  formInputPeriodicity: {
-    height: textInputHeight,
-  },
-  formInputPeriodicityDisabled: {
-    color: 'white',
-  },
-  formInputType: {
-    height: textInputHeight,
-  },
-  formInputValue: {
-    height: textInputHeight,
-  },
   formErrorMessage: {
     paddingLeft: 5,
     color: 'red',
   },
-  buttonsContainer: {
-    // width: '90%',
-  },
   toggleButton: {
     height: textInputHeight,
+  },
+  buttonsContainer: {
+    // width: '90%',
   },
   saveButton: {
     height: textInputHeight,

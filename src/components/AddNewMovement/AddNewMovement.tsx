@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Controller as FormElement, useForm } from 'react-hook-form';
 import { View, Text, TextInput } from 'react-native';
 import { Button } from 'react-native-ui-lib';
@@ -10,6 +10,8 @@ import IconButton from '../common/Buttons/IconButton/IconButton';
 import ToggleButton from '../common/Buttons/ToggleButton/ToggleButton';
 import { IMovement } from '../../types/movements';
 import { formatShortDate } from '../../utils/dates';
+import { IDatePickerState } from '../../types/dates';
+import GlobalContext from '../../contexts/GlobalContext';
 
 import styles from './styles';
 
@@ -19,12 +21,9 @@ export interface IAddNewMovement {
   initialPeriocity?: 'single' | 'auto';
 }
 
-interface IDatePickerState {
-  isOpen: boolean;
-  currentDate: Date;
-}
-
 const AddNewMovement: React.FC<IAddNewMovement> = props => {
+  const { testCategoryList } = useContext(GlobalContext);
+
   const {
     control,
     handleSubmit,
@@ -34,7 +33,7 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
   const { onSubmit, initialType, initialPeriocity } = props;
 
   const [globalUniqueId] = useState<string>(uuid.v4().toString());
-  const [toggleType, setToggleType] = useState<'income' | 'expense'>('income');
+  const [toggleType, setToggleType] = useState<IMovement['type']>('income');
   const [togglePeriocity, setTogglePeriocity] = useState<'single' | 'auto'>(
     'single',
   );
