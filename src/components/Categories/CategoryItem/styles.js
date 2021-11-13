@@ -1,20 +1,26 @@
-import { StyleSheet } from 'react-native';
-
+import { StyleSheet, Dimensions } from 'react-native';
 export default StyleSheet.create({
-  content: {
-    flex: 1,
+  rowFront: {
+    backgroundColor: '#0D1321',
+    height: 65,
+    width: Dimensions.get('window').width,
+    marginBottom: 3,
+    borderRadius: 5,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: 'white',
+    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
-  iconContainer: {
-    flex: 2,
-    alignItems: 'center',
+  text_container: {
+    textAlignVertical: 'center',
+    display: 'flex',
+    justifyContent: 'center',
   },
   title: {
-    flex: 8,
-    textAlign: 'left',
-    textAlignVertical: 'top',
-    fontSize: 30,
+    color: '#F0F6F6',
+    textAlign: 'center',
+    fontSize: 22,
+    marginTop: 7,
   },
 });
