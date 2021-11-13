@@ -211,7 +211,12 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
           <Button
             style={styles.saveButton}
             label="Guardar"
-            onPress={handleSubmit(data => onSubmit(data))}
+            onPress={handleSubmit(data => {
+              Object.assign(data, {
+                date: datePickerState.currentDate,
+              });
+              onSubmit(data);
+            })}
           />
         </View>
       </View>
