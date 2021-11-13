@@ -7,7 +7,8 @@ import { BottomBar } from '../Bottombar/BottomBar';
 export const Screens = () => {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{ headerShown: false, headerShadowVisible: false }}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Registro" component={RegistrationScreen} />
       <Stack.Screen name="Home" component={BottomBar} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { SwipeableList } from '../SwipeableList/SwipeableList';
+import { SwipeableList } from '../common/SwipeableList/SwipeableList';
 import HomeChart from './Chart/HomeChart';
 import Header from './Header/Header';
 import { List } from './List/List';

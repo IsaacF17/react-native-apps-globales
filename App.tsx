@@ -11,7 +11,7 @@ export default function App() {
     <GlobalContextProvider>
       <SafeAreaProvider>
         <NavigationContainer>
-          <StatusBar hidden={true} />
+          <StatusBar />
           <Screens />
         </NavigationContainer>
       </SafeAreaProvider>

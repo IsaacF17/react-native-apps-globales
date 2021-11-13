@@ -4,4 +4,5 @@ export interface IMovement {
   name: string;
   value: number;
   nextDate: string;
+  periodicity: 'single' | 'weekly' | 'biweekly' | 'monthly' | 'annual';
 }
