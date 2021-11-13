@@ -9,6 +9,7 @@ import IconButton from '../common/Buttons/IconButton/IconButton';
 import styles from './styles';
 import CategoryItem from './CategoryItem/CategoryItem';
 import { ICategory } from '../../types/categories';
+import { SwipeableList } from '../SwipeableList/SwipeableList';
 
 export interface ICategories {}
 
@@ -19,6 +20,11 @@ const Categories: React.FC<ICategories> = props => {
 
   const [categoryList, setCategoryList] = useState(testCategoryList);
   const [currentSearch, setCurrentSearch] = useState<string>('');
+
+  const leftContent = {
+    title: 'INFO',
+    icon_name: 'info-circle',
+  };
 
   const addNewHandler = (event: Event) => {
     console.log('TODO: open modal to create new category');
@@ -67,15 +73,12 @@ const Categories: React.FC<ICategories> = props => {
           />
         </View>
         <View style={styles.tableContainer}>
-          <ScrollView style={styles.tableScrollView}>
-            {categoryList.map((category, index) => (
-              <CategoryItem
-                key={`category-${index}`}
-                iconName={category.iconName}
-                name={category.name}
-              />
-            ))}
-          </ScrollView>
+          <SwipeableList
+            data={categoryList}
+            childComponent={CategoryItem}
+            disabledRightContent={true}
+            leftContent={leftContent}
+          />
         </View>
       </View>
     </SafeAreaView>
