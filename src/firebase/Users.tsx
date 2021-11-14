@@ -1,6 +1,4 @@
 import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 interface usuario {
   name: string;
@@ -8,7 +6,7 @@ interface usuario {
   pass: string;
 }
 
-const usuariosRef = firestore().collection('usuarios');
+const usuariosRef = firestore().collection('users');
 
 export const add = async (data: any) => {
   const exist = await checkIfEmailExists(data?.email);
@@ -30,7 +28,7 @@ export const checkUserData = (email: string, passw: string) => {
     .get()
     .then(snapShot => {
       if (snapShot.empty) return;
-      return snapShot.docs[0].data();
+      return { ...snapShot.docs[0].data(), user_id: snapShot.docs[0].id };
     });
 };
 

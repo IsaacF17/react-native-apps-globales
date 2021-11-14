@@ -1,4 +1,6 @@
 export interface ICategory {
-  iconName: string;
+  icon_name: string;
   name: string;
+  id?: string;
+  description?: string;
 }

@@ -1,21 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import { Controller as FormElement, useForm } from 'react-hook-form';
 import { View, Text, TextInput } from 'react-native';
 import { Button } from 'react-native-ui-lib';
 import IconButton from '../common/Buttons/IconButton/IconButton';
-import GlobalContext from '../../contexts/GlobalContext';
-import { MovementType } from '../../types/movements';
+import { Text as ElementsText } from 'react-native-elements';
 
 import styles from './styles';
 
 export interface IAddNewCategory {
-  onSubmit: (data: any) => void;
+  onSubmit: (data: any, categoryID?: string) => void;
+  data?: any;
 }
 
 const AddNewCategory: React.FC<IAddNewCategory> = props => {
-  const { testCategoryList } = useContext(GlobalContext);
-
-  const [toggleType, setToggleType] = useState<MovementType>('income');
+  const data = props.data;
 
   const {
     control,
@@ -24,10 +22,6 @@ const AddNewCategory: React.FC<IAddNewCategory> = props => {
   } = useForm();
 
   const { onSubmit } = props;
-
-  useEffect(() => {
-    console.log(`New toggleType: ${toggleType}`);
-  }, [toggleType]);
 
   return (
     <View style={styles.mainContainer}>
@@ -40,6 +34,9 @@ const AddNewCategory: React.FC<IAddNewCategory> = props => {
               style={styles.iconButtons}
             />
           </View>
+          <ElementsText h4 style={{ color: 'white' }}>
+            Nueva Categoría
+          </ElementsText>
         </View>
         <View style={[styles.defaultContainer, styles.formContainer]}>
           <View style={styles.formInputNameContainer}>
@@ -56,7 +53,7 @@ const AddNewCategory: React.FC<IAddNewCategory> = props => {
               )}
               name="name"
               rules={{ required: true }}
-              defaultValue=""
+              defaultValue={data?.name}
             />
             {errors.name && (
               <Text style={styles.formErrorMessage}>Nombre requerido</Text>
@@ -77,8 +74,8 @@ const AddNewCategory: React.FC<IAddNewCategory> = props => {
                   placeholder="Detalles"
                 />
               )}
-              name="details"
-              defaultValue=""
+              name="description"
+              defaultValue={data?.description || ''}
             />
           </View>
         </View>
@@ -86,7 +83,7 @@ const AddNewCategory: React.FC<IAddNewCategory> = props => {
           <Button
             style={styles.saveButton}
             label="Guardar"
-            onPress={handleSubmit(data => onSubmit(data))}
+            onPress={handleSubmit(data => onSubmit(data, props.data?.id))}
           />
         </View>
       </View>

@@ -22,7 +22,7 @@ export default StyleSheet.create({
     backgroundColor: '#DA3E52',
     height: 65,
     width: 75,
-    marginLeft: -82,
+    marginRight: 7,
     borderRadius: 10,
   },
   right_content_title: {

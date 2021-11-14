@@ -12,26 +12,13 @@ const GlobalContextProvider: React.FC = props => {
     Array<IScheduledMovement>
   >([]);
 
-  const [testCategoryList, setTestCategoryList] = useState<Array<ICategory>>([
-    { iconName: 'bus', name: 'Transporte' },
-    { iconName: 'wrench', name: 'Mantenimientos' },
-    { iconName: 'medkit', name: 'Salud' },
-    { iconName: 'money', name: 'Salarios' },
-    { iconName: 'bus', name: 'Transporte' },
-    { iconName: 'wrench', name: 'Mantenimientos' },
-    { iconName: 'medkit', name: 'Salud' },
-    { iconName: 'money', name: 'Salarios' },
-    { iconName: 'bus', name: 'Transporte' },
-    { iconName: 'wrench', name: 'Mantenimientos' },
-    { iconName: 'medkit', name: 'Salud' },
-    { iconName: 'money', name: 'Salarios' },
-  ]);
+  const [categoriesList, setCategoriesList] = useState<Array<any>>([{}]);
 
   const contextValue: IGlobalContext = {
     scheduledMovements,
     setScheduledMovements,
-    testCategoryList,
-    setTestCategoryList,
+    categoriesList,
+    setCategoriesList,
     user,
     setUser,
   };
