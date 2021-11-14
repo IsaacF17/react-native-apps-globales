@@ -6,14 +6,14 @@ import { ICategory } from '../../../types/categories';
 import styles from './styles';
 
 const CategoryItem: React.FC<any> = props => {
-  const { iconName, name } = props.data;
+  const { icon_name, name } = props.data;
   return (
     <>
       <View style={styles.rowFront}>
         <Avatar
           rounded
           icon={{
-            name: iconName,
+            name: icon_name,
             type: 'font-awesome',
             color: '#8CBCB9',
           }}

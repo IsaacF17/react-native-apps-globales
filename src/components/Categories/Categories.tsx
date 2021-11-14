@@ -11,20 +11,35 @@ import GlobalContext from '../../contexts/GlobalContext';
 import { SwipeableList } from '../common/SwipeableList/SwipeableList';
 
 import styles from './styles';
+import {
+  addUserCategory,
+  deleteCategory,
+  getCategories,
+  updateCategory,
+} from '../../firebase/Categories';
 
 export interface ICategories {}
 
 const Categories: React.FC<ICategories> = props => {
   const globalContext = useContext(GlobalContext);
 
-  const { testCategoryList, setTestCategoryList } = globalContext;
+  const { categoriesList, user, setCategoriesList } = globalContext;
 
-  const [categoryList, setCategoryList] = useState(testCategoryList);
+  const [copyCategoriesList, setCopyCategoriesList] = useState(categoriesList);
   const [currentSearch, setCurrentSearch] = useState<string>('');
   const [isAddNewOverlayOpen, setIsAddNewOverlayOpen] = useState(false);
+  const [category, setCategory] = useState({});
 
-  const onSubmitNewCategory = async (data: any) => {
+  const onSubmitNewCategory = async (data: any, categoryID?: string) => {
     console.log('TODO: Save new category', `Data: ${JSON.stringify(data)}`);
+    if (categoryID) {
+      updateCategory(data, categoryID, user.user_id);
+    } else {
+      addUserCategory(data, user.user_id);
+    }
+    const newCategoriesList = await getCategories(user.user_id);
+    setCategoriesList(newCategoriesList);
+    setCopyCategoriesList(newCategoriesList);
     setIsAddNewOverlayOpen(false);
   };
 
@@ -33,16 +48,35 @@ const Categories: React.FC<ICategories> = props => {
     icon_name: 'info-circle',
   };
 
+  const rightContent = {
+    title: 'Borrar',
+    icon_name: 'trash',
+  };
+
+  const toggleModal = (data?: any) => {
+    setCategory(data);
+    setIsAddNewOverlayOpen(true);
+  };
+
+  const removeCategory = async (data?: any) => {
+    const res = await deleteCategory(user.user_id, data.id);
+    if (res) {
+      const newCategoriesList = await getCategories(user.user_id);
+      setCategoriesList(newCategoriesList);
+      setCopyCategoriesList(newCategoriesList);
+    }
+  };
+
   useEffect(() => {
-    let filteredList: Array<ICategory> = testCategoryList;
+    let filteredList: Array<ICategory> = copyCategoriesList;
     if (currentSearch.length > 2) {
       try {
-        filteredList = testCategoryList.filter(movement =>
+        filteredList = categoriesList.filter(movement =>
           movement.name.toLowerCase().includes(currentSearch.toLowerCase()),
         );
       } catch (ignore) {}
-    }
-    setCategoryList(filteredList);
+      setCopyCategoriesList(filteredList);
+    } else setCopyCategoriesList(categoriesList);
   }, [currentSearch]);
 
   return (
@@ -54,7 +88,10 @@ const Categories: React.FC<ICategories> = props => {
             <IconButton
               name="plus"
               style={styles.headerAddButton}
-              onPress={() => setIsAddNewOverlayOpen(true)}
+              onPress={() => {
+                setCategory({});
+                setIsAddNewOverlayOpen(true);
+              }}
             />
           </View>
         </View>
@@ -77,10 +114,12 @@ const Categories: React.FC<ICategories> = props => {
         </View>
         <View style={styles.tableContainer}>
           <SwipeableList
-            data={categoryList}
+            data={copyCategoriesList}
             childComponent={CategoryItem}
-            disabledRightContent={true}
             leftContent={leftContent}
+            rightContent={rightContent}
+            leftFunction={toggleModal}
+            rightFunction={removeCategory}
           />
         </View>
       </View>
@@ -91,7 +130,7 @@ const Categories: React.FC<ICategories> = props => {
         animationOut="slideOutDown"
         backdropOpacity={0}
         onBackdropPress={() => setIsAddNewOverlayOpen(false)}>
-        <AddNewCategory onSubmit={onSubmitNewCategory} />
+        <AddNewCategory onSubmit={onSubmitNewCategory} data={category} />
       </Modal>
     </SafeAreaView>
   );

@@ -26,12 +26,12 @@ export const SwipeableList: React.FC<IProps> = props => {
       data={props.data}
       renderItem={(data: any, rowMap) => (
         <>
-          <props.childComponent data={data.item} />
+          <props.childComponent data={data.item} key={rowMap} />
         </>
       )}
       renderHiddenItem={(data, rowMap) => (
         <View style={styles.hide_content_container}>
-          {!props.disabledRightContent && (
+          {!props.disabledLeftContent && (
             <TouchableHighlight
               onPress={() =>
                 props.leftFunction ? props.leftFunction(data.item) : null
@@ -51,7 +51,7 @@ export const SwipeableList: React.FC<IProps> = props => {
               </View>
             </TouchableHighlight>
           )}
-          {!props.disabledLeftContent && (
+          {!props.disabledRightContent && (
             <TouchableHighlight
               onPress={() =>
                 props.leftFunction ? props.leftFunction(data.item) : null
