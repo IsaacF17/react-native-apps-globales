@@ -15,6 +15,7 @@ export interface IToggleButton {
   labels: Array<string> | Array<IToggleButtonLabel>;
   initialLabelIndex?: number;
   style?: StyleProp<ViewStyle>;
+  disabled?: boolean;
   onChange?: (activeLabel: string, activeIndex?: number) => void;
 }
 
@@ -26,6 +27,7 @@ const ToggleButton: React.FC<IToggleButton & ButtonProps> = props => {
     labels = ['UNDEFINED'],
     initialLabelIndex,
     style,
+    disabled,
     onChange,
   } = ownProps;
 
@@ -62,8 +64,16 @@ const ToggleButton: React.FC<IToggleButton & ButtonProps> = props => {
   return (
     <Button
       {...buttonProps}
+      disabled={disabled ?? false}
       label={getLabel(activeLabel)}
-      style={[styles.default, { backgroundColor: colors[activeLabel] }, style]}
+      style={[
+        styles.default,
+        { backgroundColor: colors[activeLabel] },
+        style,
+        {
+          opacity: disabled ? 0.5 : 1,
+        },
+      ]}
       onPress={triggerToggle}
     />
   );

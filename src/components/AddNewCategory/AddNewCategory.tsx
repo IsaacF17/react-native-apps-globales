@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import { Controller as FormElement, useForm } from 'react-hook-form';
 import { View, Text, TextInput } from 'react-native';
 import { Button } from 'react-native-ui-lib';
 import IconButton from '../common/Buttons/IconButton/IconButton';
-import GlobalContext from '../../contexts/GlobalContext';
-import { IMovement } from '../../types/movements';
 import { Text as ElementsText } from 'react-native-elements';
 
 import styles from './styles';

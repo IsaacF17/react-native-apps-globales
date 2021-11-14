@@ -28,7 +28,7 @@ export default StyleSheet.create({
   searchBarContainer: {
     flex: 1,
     justifyContent: 'center',
-    marginBottom: 10,
+    marginTop: 10,
   },
   filersContainer: {
     flex: 1,

@@ -1,12 +1,25 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Button, ListItem } from 'react-native-elements';
-import { IMovement } from '../../../types/movements';
+import { IScheduledMovement } from '../../../types/movements';
 
 import styles from './styles';
 
-const MovementItem: React.FC<IMovement> = props => {
-  const { type, name, value, nextDate } = props;
+export interface IMovementItem {
+  handleRemoveAction?: (id: string) => void;
+  handleEditAction?: (id: string) => void;
+}
+
+const MovementItem: React.FC<IScheduledMovement & IMovementItem> = props => {
+  const {
+    id,
+    type,
+    name,
+    value,
+    nextDate,
+    handleRemoveAction,
+    handleEditAction,
+  } = props;
 
   return (
     <ListItem.Swipeable
@@ -15,6 +28,11 @@ const MovementItem: React.FC<IMovement> = props => {
           title="Info"
           icon={{ name: 'info', color: 'white' }}
           buttonStyle={{ minHeight: '100%' }}
+          onPress={() => {
+            if (id) {
+              handleEditAction?.(id);
+            }
+          }}
         />
       }
       rightContent={
@@ -22,14 +40,19 @@ const MovementItem: React.FC<IMovement> = props => {
           title="Delete"
           icon={{ name: 'delete', color: 'white' }}
           buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}
+          onPress={() => {
+            if (id) {
+              handleRemoveAction?.(id);
+            }
+          }}
         />
       }>
       <ListItem.Content>
         <View style={styles.content}>
           <Text style={styles.contentCell}>{name}</Text>
           <Text style={styles.contentCell}>{`${
-            type ? '-' : ''
-          }₡${value}`}</Text>
+            type === 'expense' ? '-' : ''
+          } ₡${value}`}</Text>
           <Text style={styles.contentCell}>{nextDate}</Text>
         </View>
       </ListItem.Content>

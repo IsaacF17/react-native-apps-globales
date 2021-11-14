@@ -1,16 +1,18 @@
 import React from 'react';
 import { ICategory } from '../types/categories';
-import { IMovement } from '../types/movements';
+import { IScheduledMovement } from '../types/movements';
 
 export interface IGlobalContextData {
-  testMovementsData: Array<IMovement>;
+  scheduledMovements: Array<IScheduledMovement>;
   categoriesList: Array<ICategory>;
   user?: any;
 }
 
 export interface IGlobalContextDispatchers {
-  setTestMovementsData?: (newState: Array<IMovement>) => void;
-  setCategoriesList: (newState: Array<ICategory>) => void;
+  setScheduledMovements: React.Dispatch<
+    React.SetStateAction<Array<IScheduledMovement>>
+  >;
+  setCategoriesList: React.Dispatch<React.SetStateAction<Array<ICategory>>>;
   setUser: (newState: any) => void;
 }
 
