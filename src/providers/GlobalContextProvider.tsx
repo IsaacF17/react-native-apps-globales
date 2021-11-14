@@ -115,26 +115,13 @@ const GlobalContextProvider: React.FC = props => {
     },
   ]);
 
-  const [testCategoryList, setTestCategoryList] = useState<Array<ICategory>>([
-    { iconName: 'bus', name: 'Transporte' },
-    { iconName: 'wrench', name: 'Mantenimientos' },
-    { iconName: 'medkit', name: 'Salud' },
-    { iconName: 'money', name: 'Salarios' },
-    { iconName: 'bus', name: 'Transporte' },
-    { iconName: 'wrench', name: 'Mantenimientos' },
-    { iconName: 'medkit', name: 'Salud' },
-    { iconName: 'money', name: 'Salarios' },
-    { iconName: 'bus', name: 'Transporte' },
-    { iconName: 'wrench', name: 'Mantenimientos' },
-    { iconName: 'medkit', name: 'Salud' },
-    { iconName: 'money', name: 'Salarios' },
-  ]);
+  const [categoriesList, setCategoriesList] = useState<Array<any>>([{}]);
 
   const contextValue: IGlobalContext = {
     testMovementsData,
     setTestMovementsData,
-    testCategoryList,
-    setTestCategoryList,
+    categoriesList,
+    setCategoriesList,
     user,
     setUser,
   };

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { View, Text, TextInput } from 'react-native';
 import styles from '../Registration/styles';
 import { Button } from 'react-native-elements';
 import { checkUserData } from '../../firebase/Users';
+import { getCategories } from '../../firebase/Categories';
+import GlobalContext from '../../contexts/GlobalContext';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const {
@@ -12,10 +14,17 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     formState: { errors },
   } = useForm();
 
+  const { setCategoriesList, setUser } = useContext(GlobalContext);
+
   const onSubmit = async (data: any) => {
-    const canLogIn = await checkUserData(data.email, data.pass);
-    console.log(canLogIn);
-    navigation.navigate('Home');
+    //data.email, data.pass
+    const userResponse = await checkUserData('admin@mail.com', '123');
+    if (userResponse) {
+      setUser(userResponse);
+      const categories = await getCategories(userResponse.user_id);
+      setCategoriesList(categories);
+      navigation.navigate('Home');
+    }
   };
 
   const onFooterLinkPress = () => {

@@ -4,14 +4,14 @@ import { IMovement } from '../types/movements';
 
 export interface IGlobalContextData {
   testMovementsData: Array<IMovement>;
-  testCategoryList: Array<ICategory>;
+  categoriesList: Array<ICategory>;
   user?: any;
 }
 
 export interface IGlobalContextDispatchers {
   setTestMovementsData?: (newState: Array<IMovement>) => void;
-  setTestCategoryList?: (newState: Array<ICategory>) => void;
-  setUser?: (newState: any) => void;
+  setCategoriesList: (newState: Array<ICategory>) => void;
+  setUser: (newState: any) => void;
 }
 
 export type IGlobalContext = IGlobalContextData & IGlobalContextDispatchers;
