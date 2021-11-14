@@ -1,3 +1,5 @@
+import { toInteger } from 'lodash';
+
 export const formatShortDate = (date: Date) => {
   const splittedDate = date
     .toLocaleDateString('es-ES', {
@@ -7,4 +9,18 @@ export const formatShortDate = (date: Date) => {
     })
     .split('/');
   return `${splittedDate[1]}/${splittedDate[0]}/${splittedDate[2]}`;
+};
+
+export const parseDate = (date: string) => {
+  try {
+    const splittedDate = date.split('/');
+    return new Date(
+      toInteger(splittedDate[2]),
+      toInteger(splittedDate[1]),
+      toInteger(splittedDate[0]),
+    );
+  } catch (error) {
+    console.log(`Error parsing date: ${date}\nError: ${error}`);
+    return new Date();
+  }
 };

@@ -8,7 +8,7 @@ import AddNewCategory from '../AddNewCategory/AddNewCategory';
 import CategoryItem from './CategoryItem/CategoryItem';
 import { ICategory } from '../../types/categories';
 import GlobalContext from '../../contexts/GlobalContext';
-import { SwipeableList } from '../SwipeableList/SwipeableList';
+import { SwipeableList } from '../common/SwipeableList/SwipeableList';
 
 import styles from './styles';
 

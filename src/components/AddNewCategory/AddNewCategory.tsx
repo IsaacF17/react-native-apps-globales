@@ -4,7 +4,7 @@ import { View, Text, TextInput } from 'react-native';
 import { Button } from 'react-native-ui-lib';
 import IconButton from '../common/Buttons/IconButton/IconButton';
 import GlobalContext from '../../contexts/GlobalContext';
-import { IMovement } from '../../types/movements';
+import { MovementType } from '../../types/movements';
 
 import styles from './styles';
 
@@ -15,7 +15,7 @@ export interface IAddNewCategory {
 const AddNewCategory: React.FC<IAddNewCategory> = props => {
   const { testCategoryList } = useContext(GlobalContext);
 
-  const [toggleType, setToggleType] = useState<IMovement['type']>('income');
+  const [toggleType, setToggleType] = useState<MovementType>('income');
 
   const {
     control,

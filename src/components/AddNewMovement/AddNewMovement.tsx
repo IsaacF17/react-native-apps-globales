@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { Controller as FormElement, useForm } from 'react-hook-form';
 import { View, Text, TextInput } from 'react-native';
 import { Button } from 'react-native-ui-lib';
@@ -8,50 +8,52 @@ import { Picker } from '@react-native-community/picker';
 import uuid from 'react-native-uuid';
 import IconButton from '../common/Buttons/IconButton/IconButton';
 import ToggleButton from '../common/Buttons/ToggleButton/ToggleButton';
-import { IMovement } from '../../types/movements';
-import { formatShortDate } from '../../utils/dates';
+import {
+  IMovement,
+  IScheduledMovement,
+  MovementScheduleType,
+  MovementType,
+} from '../../types/movements';
+import { formatShortDate, parseDate } from '../../utils/dates';
 import { IDatePickerState } from '../../types/dates';
-import GlobalContext from '../../contexts/GlobalContext';
 
 import styles from './styles';
 
 export interface IAddNewMovement {
-  onSubmit: (data: any) => void;
-  initialType?: 'income' | 'expense';
-  initialPeriocity?: 'single' | 'auto';
+  submitNewSingleMovement: (data: IMovement) => void;
+  submitNewScheduledMovement: (data: IScheduledMovement) => void;
+  updateScheduledMovement: (newData: IScheduledMovement) => void;
+  scheduledMovement?: IScheduledMovement | null | undefined;
+  initialType?: MovementType;
+  initialScheduleType?: MovementScheduleType;
 }
 
 const AddNewMovement: React.FC<IAddNewMovement> = props => {
-  const { testCategoryList } = useContext(GlobalContext);
+  const {
+    submitNewSingleMovement,
+    submitNewScheduledMovement,
+    updateScheduledMovement,
+    scheduledMovement,
+    initialType,
+    initialScheduleType,
+  } = props;
+
+  const [globalUniqueId] = useState<string>(uuid.v4().toString());
+  const [isUpdating] = useState<boolean>(!!scheduledMovement?.id);
+  const [toggleScheduleType, setToggleScheduleType] =
+    useState<MovementScheduleType>(initialScheduleType ?? 'single');
+  const [datePickerState, setDatePickerState] = useState<IDatePickerState>({
+    isOpen: false,
+    currentDate: scheduledMovement?.nextDate
+      ? parseDate(scheduledMovement?.nextDate)
+      : new Date(),
+  });
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-
-  const { onSubmit, initialType, initialPeriocity } = props;
-
-  const [globalUniqueId] = useState<string>(uuid.v4().toString());
-  const [toggleType, setToggleType] = useState<IMovement['type']>('income');
-  const [togglePeriocity, setTogglePeriocity] = useState<'single' | 'auto'>(
-    'single',
-  );
-  const [periodicity, setPeriodicity] =
-    useState<IMovement['periodicity']>('weekly');
-  const [datePickerState, setDatePickerState] = useState<IDatePickerState>({
-    isOpen: false,
-    currentDate: new Date(),
-  });
-
-  useEffect(() => {
-    if (initialType === 'expense') {
-      setToggleType('expense');
-    }
-    if (initialPeriocity === 'auto') {
-      setTogglePeriocity('auto');
-    }
-  }, []);
+  } = useForm<IMovement & IScheduledMovement>();
 
   return (
     <View style={styles.mainContainer}>
@@ -99,7 +101,7 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
               )}
               name="name"
               rules={{ required: true }}
-              defaultValue=""
+              defaultValue={isUpdating ? scheduledMovement?.name : undefined}
             />
             {errors.name && (
               <Text style={styles.formErrorMessage}>Nombre requerido</Text>
@@ -108,16 +110,33 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
           <View
             style={[styles.defaultContainer, styles.formMultiInputContainer]}>
             <View style={styles.formInputTypeContainer}>
-              <ToggleButton
-                style={styles.toggleButton}
-                initialLabelIndex={initialType === 'expense' ? 1 : 0}
-                onChange={(activeLabel, activeIndex) => {
-                  setToggleType(activeIndex === 0 ? 'income' : 'expense');
-                }}
-                labels={[
-                  { label: 'Ingreso', color: '#27a02b' },
-                  { label: 'Gasto', color: '#ff0000' },
-                ]}
+              <FormElement
+                control={control}
+                name="type"
+                defaultValue={
+                  (isUpdating && scheduledMovement?.type) ||
+                  initialType ||
+                  'income'
+                }
+                render={({ field: { onChange } }) => (
+                  <ToggleButton
+                    style={styles.toggleButton}
+                    initialLabelIndex={
+                      (isUpdating && scheduledMovement?.type === 'expense') ||
+                      initialType === 'expense'
+                        ? 1
+                        : 0
+                    }
+                    onChange={(activeLabel, activeIndex) => {
+                      const newType = activeIndex === 0 ? 'income' : 'expense';
+                      onChange(newType);
+                    }}
+                    labels={[
+                      { label: 'Ingreso', color: '#27a02b' },
+                      { label: 'Gasto', color: '#ff0000' },
+                    ]}
+                  />
+                )}
               />
             </View>
             <View style={styles.formInputValueContainer}>
@@ -128,14 +147,14 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
                     style={[styles.formTextInput, styles.formInputValue]}
                     onBlur={onBlur}
                     onChangeText={onChange}
-                    value={value}
+                    value={value?.toString()}
                     keyboardType="numeric"
                     placeholder="Monto"
                   />
                 )}
                 name="value"
                 rules={{ required: true, pattern: /^\d+$/ }}
-                defaultValue=""
+                defaultValue={isUpdating ? scheduledMovement?.value : undefined}
               />
               {errors.value && (
                 <Text style={styles.formErrorMessage}>
@@ -150,10 +169,13 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
             style={[styles.defaultContainer, styles.formMultiInputContainer]}>
             <View style={styles.formInputPerioToggleContainer}>
               <ToggleButton
+                disabled={isUpdating}
                 style={styles.toggleButton}
-                initialLabelIndex={initialPeriocity === 'auto' ? 1 : 0}
+                initialLabelIndex={initialScheduleType === 'scheduled' ? 1 : 0}
                 onChange={(activeLabel, activeIndex) => {
-                  setTogglePeriocity(activeIndex === 0 ? 'single' : 'auto');
+                  setToggleScheduleType(
+                    activeIndex === 0 ? 'single' : 'scheduled',
+                  );
                 }}
                 labels={[
                   { label: 'Simple', color: '#4287f5' },
@@ -162,29 +184,40 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
               />
             </View>
             <View style={styles.formInputPeriodicityContainer}>
-              <Picker
-                key={`new-movement-periocity-picker-${globalUniqueId}`}
-                testID={`new-movement-periocity-picker-${globalUniqueId}`}
-                pointerEvents={togglePeriocity === 'auto' ? 'auto' : 'none'}
-                enabled={togglePeriocity === 'auto'}
-                style={[
-                  styles.formTextInput,
-                  styles.formInputPeriodicity,
-                  {
-                    color: togglePeriocity === 'auto' ? 'black' : 'white',
-                    opacity: togglePeriocity === 'auto' ? 1 : 0.5,
-                  },
-                ]}
-                itemStyle={[styles.formInputPeriodicity]}
-                selectedValue={periodicity}
-                onValueChange={(itemValue: ItemValue) => {
-                  setPeriodicity(itemValue as IMovement['periodicity']);
-                }}>
-                <Picker.Item label="Semanal" value="weekly" />
-                <Picker.Item label="Quincenal" value="biweekly" />
-                <Picker.Item label="Mensual" value="monthly" />
-                <Picker.Item label="Anual" value="annual" />
-              </Picker>
+              <FormElement
+                control={control}
+                name="periodicity"
+                defaultValue={
+                  isUpdating ? scheduledMovement?.periodicity : 'weekly'
+                }
+                render={({ field: { onChange, value } }) => (
+                  <Picker
+                    key={`new-movement-periodicity-picker-${globalUniqueId}`}
+                    testID={`new-movement-periodicity-picker-${globalUniqueId}`}
+                    enabled={toggleScheduleType === 'scheduled'}
+                    style={[
+                      styles.formTextInput,
+                      styles.formInputPeriodicity,
+                      {
+                        color:
+                          toggleScheduleType === 'scheduled'
+                            ? 'black'
+                            : 'white',
+                        opacity: toggleScheduleType === 'scheduled' ? 1 : 0.5,
+                      },
+                    ]}
+                    itemStyle={[styles.formInputPeriodicity]}
+                    selectedValue={value}
+                    onValueChange={(itemValue: ItemValue) => {
+                      onChange(itemValue);
+                    }}>
+                    <Picker.Item label="Semanal" value="weekly" />
+                    <Picker.Item label="Quincenal" value="biweekly" />
+                    <Picker.Item label="Mensual" value="monthly" />
+                    <Picker.Item label="Anual" value="annual" />
+                  </Picker>
+                )}
+              />
             </View>
           </View>
           <View style={styles.formInputDetailsContainer}>
@@ -198,12 +231,12 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
                   maxLength={100}
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  value={value}
+                  value={value?.toString()}
                   placeholder="Detalles"
                 />
               )}
               name="details"
-              defaultValue=""
+              defaultValue={isUpdating ? scheduledMovement?.details : undefined}
             />
           </View>
         </View>
@@ -211,7 +244,22 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
           <Button
             style={styles.saveButton}
             label="Guardar"
-            onPress={handleSubmit(data => onSubmit(data))}
+            onPress={handleSubmit(data => {
+              if (toggleScheduleType === 'single') {
+                // @ts-ignore
+                delete data.periodicity;
+                data.date = formatShortDate(datePickerState.currentDate);
+                submitNewSingleMovement(data);
+              } else if (toggleScheduleType === 'scheduled') {
+                data.nextDate = formatShortDate(datePickerState.currentDate);
+                if (isUpdating && scheduledMovement?.id) {
+                  data.id = scheduledMovement.id;
+                  updateScheduledMovement(data);
+                } else {
+                  submitNewScheduledMovement(data);
+                }
+              }
+            })}
           />
         </View>
       </View>
