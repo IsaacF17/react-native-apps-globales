@@ -19,7 +19,7 @@ import styles from './styles';
 export interface IScheduledMovements {}
 
 const ScheduledMovements: React.FC<IScheduledMovements> = props => {
-  const { scheduledMovements, setScheduledMovements } =
+  const { scheduledMovements, setScheduledMovements, user } =
     useContext(GlobalContext);
 
   const [filteredList, setFilteredList] = useState<Array<IScheduledMovement>>(
@@ -40,7 +40,7 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
     });
 
   const submitNewSingleMovement = async (data: IMovement) => {
-    console.log('submitNewSingleMovement - ', data);
+    data.userId = user.id;
     movementService.add(data).then(newId => {
       const newData = { ...data, id: newId };
     });
@@ -48,7 +48,7 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
   };
 
   const submitNewScheduledMovement = async (data: IScheduledMovement) => {
-    console.log('submitNewScheduledMovement - ', data);
+    data.userId = user.id;
     scheduledService.add(data).then(newId => {
       if (newId) {
         setScheduledMovements(prevState => [
@@ -61,7 +61,8 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
   };
 
   const updateScheduledMovement = async (newData: IScheduledMovement) => {
-    const response = await scheduledService.update(newData);
+    newData.userId = user.id;
+    const response = await scheduledService.update(newData, user.id);
     if (response) {
       setScheduledMovements(prevState =>
         prevState.map(movement =>
@@ -73,7 +74,7 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
   };
 
   const removeScheduledMovement = async (id: string) => {
-    const response = await scheduledService.remove(id);
+    const response = await scheduledService.remove(id, user.id);
     if (response) {
       setScheduledMovements(prevState =>
         prevState.filter(movement => movement.id !== id),
@@ -132,12 +133,7 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
             {filteredList.map((item, index) => (
               <MovementItem
                 key={`scheduled-movement-${index}`}
-                id={item.id}
-                type={item.type}
-                name={item.name}
-                value={item.value}
-                nextDate={item.nextDate}
-                periodicity={item.periodicity}
+                {...item}
                 handleRemoveAction={removeScheduledMovement}
                 handleEditAction={(id: string) => {
                   setUpdatingTarget(
