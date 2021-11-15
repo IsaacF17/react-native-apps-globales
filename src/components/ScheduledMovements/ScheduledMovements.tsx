@@ -15,6 +15,7 @@ import movementService from '../../firebase/Movement';
 import scheduledService from '../../firebase/Scheduled';
 
 import styles from './styles';
+import { SwipeableList } from '../common/SwipeableList/SwipeableList';
 
 export interface IScheduledMovements {}
 
@@ -82,6 +83,16 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
     }
   };
 
+  const leftContent = {
+    title: 'INFO',
+    icon_name: 'info-circle',
+  };
+
+  const rightContent = {
+    title: 'Borrar',
+    icon_name: 'trash',
+  };
+
   useEffect(() => {
     let filteredList: Array<IScheduledMovement> = scheduledMovements;
     if (currentSearch.length > 2) {
@@ -129,21 +140,21 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
         </View>
         <View style={styles.filersContainer}>{ToggleButtonGroup}</View>
         <View style={styles.tableContainer}>
-          <ScrollView style={styles.tableScrollView}>
-            {filteredList.map((item, index) => (
-              <MovementItem
-                key={`scheduled-movement-${index}`}
-                {...item}
-                handleRemoveAction={removeScheduledMovement}
-                handleEditAction={(id: string) => {
-                  setUpdatingTarget(
-                    scheduledMovements.find(movement => movement.id === id),
-                  );
-                  setIsAddNewOverlayOpen(true);
-                }}
-              />
-            ))}
-          </ScrollView>
+          <SwipeableList
+            data={filteredList}
+            childComponent={MovementItem}
+            leftContent={leftContent}
+            rightContent={rightContent}
+            leftFunction={(data: IScheduledMovement) => {
+              setUpdatingTarget(
+                scheduledMovements.find(movement => movement.id === data.id),
+              );
+              setIsAddNewOverlayOpen(true);
+            }}
+            rightFunction={(data: IScheduledMovement) => {
+              removeScheduledMovement(data.id);
+            }}
+          />
         </View>
       </View>
       <Modal
