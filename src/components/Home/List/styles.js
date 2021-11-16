@@ -6,61 +6,40 @@ export default StyleSheet.create({
     backgroundColor: '#0D1321',
     height: 65,
     width: Dimensions.get('window').width,
-    marginBottom: 5,
     borderRadius: 5,
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: 'white',
-    display: 'flex',
+    flex: 1,
     flexDirection: 'row',
   },
-  tex: {
+  leftContainer: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  middleContainer: {
+    flex: 5,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  rightContainer: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  avatar: {},
+  text: {
     color: '#F0F6F6',
-    textAlign: 'center',
   },
   title: {
     fontSize: 18,
-    marginTop: 7,
   },
-  subTitle: {
+  subtitle: {
     textAlign: 'left',
     fontSize: 12,
   },
-  right_title: {
-    marginLeft: 170,
-    fontSize: 18,
-    marginTop: 10,
-    color: '#C50A07',
-  },
-  right_subtitle: {
-    marginLeft: 175,
-    textAlign: 'left',
-  },
-  hide_content_container: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  left_content: {
-    backgroundColor: '#008FF5',
-    height: 64,
-    width: 75,
-    marginLeft: 7,
-    borderRadius: 5,
-  },
-  left_content_title: {
-    color: 'white',
-    textAlign: 'center',
-  },
-  right_content: {
-    backgroundColor: '#DA3E52',
-    height: 65,
-    width: 75,
-    marginLeft: -82,
-    borderRadius: 10,
-  },
-  right_content_title: {
-    color: 'white',
-    textAlign: 'center',
+  value: {
+    fontSize: 20,
   },
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { IScheduledMovement } from '../../../types/movements';
+import { formatShortDate } from '../../../utils/dates';
 
 import styles from './styles';
 
@@ -15,9 +16,11 @@ const MovementItem: React.FC<IMovementItem> = props => {
     <View style={styles.rowFront}>
       <Text style={styles.contentCell}>{name}</Text>
       <Text style={styles.contentCell}>{`${
-        type === 'expense' ? '-' : ''
-      } ₡${value}`}</Text>
-      <Text style={styles.contentCell}>{nextDate}</Text>
+        type === 'expense' ? '- ' : ''
+      }₡${value}`}</Text>
+      <Text style={styles.contentCell}>
+        {formatShortDate(new Date(nextDate))}
+      </Text>
     </View>
   );
 };

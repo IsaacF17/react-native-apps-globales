@@ -11,8 +11,8 @@ import IconButton from '../common/Buttons/IconButton/IconButton';
 import { IMovement, IScheduledMovement } from '../../types/movements';
 import MovementItem from './MovementItem/MovementItem';
 import AddNewMovement from '../AddNewMovement/AddNewMovement';
-import movementService from '../../firebase/Movement';
-import scheduledService from '../../firebase/Scheduled';
+import MovementService from '../../firebase/Movement';
+import ScheduledService from '../../firebase/Scheduled';
 
 import styles from './styles';
 import { SwipeableList } from '../common/SwipeableList/SwipeableList';
@@ -42,7 +42,7 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
 
   const submitNewSingleMovement = async (data: IMovement) => {
     data.userId = user.id;
-    movementService.add(data).then(newId => {
+    MovementService.add(data).then(newId => {
       const newData = { ...data, id: newId };
     });
     setIsAddNewOverlayOpen(false);
@@ -50,7 +50,7 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
 
   const submitNewScheduledMovement = async (data: IScheduledMovement) => {
     data.userId = user.id;
-    scheduledService.add(data).then(newId => {
+    ScheduledService.add(data).then(newId => {
       if (newId) {
         setScheduledMovements(prevState => [
           { ...data, id: newId },
@@ -63,7 +63,7 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
 
   const updateScheduledMovement = async (newData: IScheduledMovement) => {
     newData.userId = user.id;
-    const response = await scheduledService.update(newData, user.id);
+    const response = await ScheduledService.update(newData, user.id);
     if (response) {
       setScheduledMovements(prevState =>
         prevState.map(movement =>
@@ -75,7 +75,7 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
   };
 
   const removeScheduledMovement = async (id: string) => {
-    const response = await scheduledService.remove(id, user.id);
+    const response = await ScheduledService.remove(id, user.id);
     if (response) {
       setScheduledMovements(prevState =>
         prevState.filter(movement => movement.id !== id),

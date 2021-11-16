@@ -14,4 +14,10 @@ export default StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
   },
+  modal: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
 });

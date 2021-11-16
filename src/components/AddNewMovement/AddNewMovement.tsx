@@ -14,7 +14,7 @@ import {
   MovementScheduleType,
   MovementType,
 } from '../../types/movements';
-import { formatShortDate, parseDate } from '../../utils/dates';
+import { formatShortDate, parseToDate, parseToUnix } from '../../utils/dates';
 import { IDatePickerState } from '../../types/dates';
 
 import styles from './styles';
@@ -45,7 +45,7 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
   const [datePickerState, setDatePickerState] = useState<IDatePickerState>({
     isOpen: false,
     currentDate: scheduledMovement?.nextDate
-      ? parseDate(scheduledMovement?.nextDate)
+      ? new Date(scheduledMovement.nextDate)
       : new Date(),
   });
 
@@ -248,10 +248,10 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
               if (toggleScheduleType === 'single') {
                 // @ts-ignore
                 delete data.periodicity;
-                data.date = formatShortDate(datePickerState.currentDate);
+                data.date = parseToUnix(datePickerState.currentDate) ?? 1;
                 submitNewSingleMovement(data);
               } else if (toggleScheduleType === 'scheduled') {
-                data.nextDate = formatShortDate(datePickerState.currentDate);
+                data.nextDate = parseToUnix(datePickerState.currentDate) ?? 1;
                 if (isUpdating && scheduledMovement?.id) {
                   data.id = scheduledMovement.id;
                   updateScheduledMovement(data);
@@ -270,6 +270,7 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
           display="default"
           value={datePickerState.currentDate}
           onChange={(event: any, selectedDate?: Date) => {
+            console.log('DatePicker: ', parseToUnix(selectedDate));
             setDatePickerState({
               currentDate: selectedDate || datePickerState.currentDate,
               isOpen: false,

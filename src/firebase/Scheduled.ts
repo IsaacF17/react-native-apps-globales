@@ -1,7 +1,7 @@
 import { getGenericCollection } from '../utils/firebase';
 import { IScheduledMovement } from '../types/movements';
 
-const { collection, add, get, getAll, update, remove } =
+const { collection, add, addAll, get, getAll, update, updateAll, remove } =
   getGenericCollection<IScheduledMovement>('scheduled');
 
-export default { add, get, getAll, update, remove };
+export default { add, addAll, get, getAll, update, updateAll, remove };
