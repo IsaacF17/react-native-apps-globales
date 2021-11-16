@@ -14,7 +14,8 @@ import {
   MovementScheduleType,
   MovementType,
 } from '../../types/movements';
-import { formatShortDate, parseToDate, parseToUnix } from '../../utils/dates';
+import { formatShortDate } from '../../utils/dates';
+import { fromDateToUnix } from '../../utils/unix';
 import { IDatePickerState } from '../../types/dates';
 
 import styles from './styles';
@@ -245,13 +246,14 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
             style={styles.saveButton}
             label="Guardar"
             onPress={handleSubmit(data => {
+              const newDate = fromDateToUnix(datePickerState.currentDate, true);
               if (toggleScheduleType === 'single') {
                 // @ts-ignore
                 delete data.periodicity;
-                data.date = parseToUnix(datePickerState.currentDate) ?? 1;
+                data.date = newDate;
                 submitNewSingleMovement(data);
               } else if (toggleScheduleType === 'scheduled') {
-                data.nextDate = parseToUnix(datePickerState.currentDate) ?? 1;
+                data.nextDate = newDate;
                 if (isUpdating && scheduledMovement?.id) {
                   data.id = scheduledMovement.id;
                   updateScheduledMovement(data);
@@ -270,7 +272,6 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
           display="default"
           value={datePickerState.currentDate}
           onChange={(event: any, selectedDate?: Date) => {
-            console.log('DatePicker: ', parseToUnix(selectedDate));
             setDatePickerState({
               currentDate: selectedDate || datePickerState.currentDate,
               isOpen: false,

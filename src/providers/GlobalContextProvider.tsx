@@ -4,13 +4,8 @@ import { ICategory } from '../types/categories';
 import { IMovement, IScheduledMovement } from '../types/movements';
 import MovementService from '../firebase/Movement';
 import ScheduledService from '../firebase/Scheduled';
-import {
-  getThisWeekUnixRange,
-  getTodayAsDate,
-  getTodayAsUnix,
-  getTomorrowAsUnix,
-} from '../utils/dates';
 import { orderBy } from 'lodash';
+import { getTomorrow } from '../utils/unix';
 
 const GlobalContextProvider: React.FC = props => {
   const { children } = props;
@@ -38,7 +33,7 @@ const GlobalContextProvider: React.FC = props => {
   };
 
   useEffect(() => {
-    const tomorrowAsUnix = getTomorrowAsUnix();
+    const tomorrowAsUnix = getTomorrow();
     const expiredMovements = scheduledMovements.filter(
       movement => movement.nextDate < tomorrowAsUnix,
     );
@@ -51,20 +46,6 @@ const GlobalContextProvider: React.FC = props => {
       loadScheduledMovements();
     }
   }, [user, user.id]);
-
-  useEffect(() => {
-    const todayAsDate = getTodayAsDate();
-    const todayAsUnix = getTodayAsUnix();
-    const tomorrowAsUnix = getTomorrowAsUnix();
-    const { mondayUnix, nextMondayUnix } = getThisWeekUnixRange();
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('todayAsDate\t', todayAsDate);
-    console.log('todayAsUnix\t', new Date(todayAsUnix));
-    console.log('tomorrowAsUnix\t', new Date(tomorrowAsUnix));
-    console.log('mondayUnix\t', new Date(mondayUnix));
-    console.log('nextMondayUnix\t', new Date(nextMondayUnix));
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-  }, []);
 
   const contextValue: IGlobalContext = {
     scheduledMovements,
