@@ -22,7 +22,7 @@ export interface IAddNewMovement {
 }
 
 const AddNewMovement: React.FC<IAddNewMovement> = props => {
-  const { testCategoryList } = useContext(GlobalContext);
+  const { categoriesList } = useContext(GlobalContext);
 
   const {
     control,
