@@ -28,7 +28,7 @@ export default StyleSheet.create({
   searchBarContainer: {
     flex: 1,
     justifyContent: 'center',
-    marginBottom: 10,
+    marginTop: 10,
   },
   filersContainer: {
     flex: 1,
@@ -54,11 +54,5 @@ export default StyleSheet.create({
   tableScrollView: {
     flex: 1,
     flexShrink: 1,
-  },
-  addNewMovementModal: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
   },
 });

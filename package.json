@@ -53,6 +53,7 @@
     "react-hook-form": "^7.17.5",
     "react-native": "0.64.2",
     "react-native-animated-spinkit": "^1.5.2",
+    "react-native-bouncy-checkbox": "^2.1.7",
     "react-native-chart-kit": "^6.11.0",
     "react-native-dynamic-search-bar": "^2.0.1",
     "react-native-elements": "^3.4.2",

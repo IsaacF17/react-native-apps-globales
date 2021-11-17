@@ -1,30 +1,32 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import Modal from 'react-native-modal';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchBar from 'react-native-dynamic-search-bar';
+import GlobalContext from '../../contexts/GlobalContext';
 import useToggleButtonGroup, {
   IUseToggleButtonGroupReturn,
 } from '../../hooks/useToggleButtonGroup';
-import { toNumber } from 'lodash';
 import IconButton from '../common/Buttons/IconButton/IconButton';
-import { IMovement } from '../../types/movements';
+import { IScheduledMovement } from '../../types/movements';
 import MovementItem from './MovementItem/MovementItem';
-import AddNewMovement from '../AddNewMovement/AddNewMovement';
-import GlobalContext from '../../contexts/GlobalContext';
+import { SwipeableList } from '../common/SwipeableList/SwipeableList';
+import NewMovementContext from '../../contexts/NewMovementContext';
 
 import styles from './styles';
 
-export interface IScheduledMovements {}
+const ScheduledMovements: React.FC = () => {
+  const { scheduledMovements } = useContext(GlobalContext);
+  const {
+    setIsModalOpen,
+    setInitialScheduleType,
+    setEditingScheduledMovement,
+    removeScheduledMovement,
+  } = useContext(NewMovementContext);
 
-const ScheduledMovements: React.FC<IScheduledMovements> = props => {
-  const globalContext = useContext(GlobalContext);
-
-  const { testMovementsData, categoriesList } = globalContext;
-
-  const [movementList, setMovementList] = useState<Array<IMovement>>([]);
+  const [filteredList, setFilteredList] = useState<Array<IScheduledMovement>>(
+    [],
+  );
   const [currentSearch, setCurrentSearch] = useState<string>('');
-  const [isAddNewOverlayOpen, setIsAddNewOverlayOpen] = useState(false);
 
   const [ToggleButtonGroup, selectedTypes]: IUseToggleButtonGroupReturn =
     useToggleButtonGroup({
@@ -33,28 +35,25 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
       initialSelectedIndexes: [0, 1],
     });
 
-  const onSubmitNewMovement = async (data: any) => {
-    console.log(
-      'TODO: Save new income/expense',
-      `Data: ${JSON.stringify(data)}`,
-    );
-    setIsAddNewOverlayOpen(false);
+  const openAddNewModal = () => {
+    setInitialScheduleType('scheduled');
+    setIsModalOpen(true);
   };
 
   useEffect(() => {
-    let filteredList: Array<IMovement> = testMovementsData;
+    let filteredList: Array<IScheduledMovement> = scheduledMovements;
     if (currentSearch.length > 2) {
       try {
-        filteredList = testMovementsData.filter(movement =>
+        filteredList = filteredList.filter(movement =>
           movement.name.toLowerCase().includes(currentSearch.toLowerCase()),
         );
       } catch (ignore) {}
     }
     filteredList = filteredList.filter(movement =>
-      selectedTypes.includes(toNumber(movement.type === 'expense')),
+      selectedTypes.includes(movement.type === 'expense' ? 1 : 0),
     );
-    setMovementList(filteredList);
-  }, [currentSearch, selectedTypes]);
+    setFilteredList(filteredList);
+  }, [scheduledMovements, currentSearch, selectedTypes]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -65,7 +64,7 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
             <IconButton
               name="plus"
               style={styles.headerAddButton}
-              onPress={() => setIsAddNewOverlayOpen(true)}
+              onPress={() => openAddNewModal()}
             />
           </View>
         </View>
@@ -88,32 +87,22 @@ const ScheduledMovements: React.FC<IScheduledMovements> = props => {
         </View>
         <View style={styles.filersContainer}>{ToggleButtonGroup}</View>
         <View style={styles.tableContainer}>
-          <ScrollView style={styles.tableScrollView}>
-            {movementList.map((item, index) => (
-              <MovementItem
-                key={`scheduled-movement-${index}`}
-                type={item.type}
-                name={item.name}
-                value={item.value}
-                nextDate={item.nextDate}
-                periodicity={item.periodicity}
-              />
-            ))}
-          </ScrollView>
+          <SwipeableList
+            data={filteredList}
+            childComponent={MovementItem}
+            leftFunction={(data: IScheduledMovement) => {
+              setEditingScheduledMovement(
+                scheduledMovements.find(movement => movement.id === data.id) ??
+                  null,
+              );
+              openAddNewModal();
+            }}
+            rightFunction={(data: IScheduledMovement) => {
+              removeScheduledMovement(data.id);
+            }}
+          />
         </View>
       </View>
-      <Modal
-        style={styles.addNewMovementModal}
-        isVisible={isAddNewOverlayOpen}
-        animationIn="slideInDown"
-        animationOut="slideOutDown"
-        backdropOpacity={0}
-        onBackdropPress={() => setIsAddNewOverlayOpen(false)}>
-        <AddNewMovement
-          initialPeriocity="auto"
-          onSubmit={onSubmitNewMovement}
-        />
-      </Modal>
     </SafeAreaView>
   );
 };

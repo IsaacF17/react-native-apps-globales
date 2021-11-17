@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import HomeScreen from '../../Home/Home';
 import { Icon } from 'react-native-elements';
@@ -6,10 +6,13 @@ import { RegistrationScreen } from '../../Registration/Registration';
 import ScheduledMovements from '../../ScheduledMovements/ScheduledMovements';
 import Categories from '../../Categories/Categories';
 import { Reports } from '../../Reports/Reports';
+import NewMovementContext from '../../../contexts/NewMovementContext';
 
 const Tab = createMaterialBottomTabNavigator();
 
 export function BottomBar() {
+  const { setIsModalOpen } = useContext(NewMovementContext);
+
   return (
     <Tab.Navigator
       initialRouteName="Login"
@@ -49,6 +52,12 @@ export function BottomBar() {
       <Tab.Screen
         name="Nuevo"
         component={HomeScreen}
+        listeners={() => ({
+          tabPress: e => {
+            e.preventDefault();
+            setIsModalOpen(true);
+          },
+        })}
         options={{
           tabBarIcon: () => (
             <Icon

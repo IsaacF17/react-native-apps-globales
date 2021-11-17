@@ -20,7 +20,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     //data.email, data.pass
     const userResponse = await checkUserData('admin@mail.com', '123');
     if (userResponse) {
-      setUser(userResponse);
+      // setUser(userResponse);
+      setUser({ id: 'cufVpoJMKg6Xq1tKryo7' });
       const categories = await getCategories(userResponse.user_id);
       setCategoriesList(categories);
       navigation.navigate('Home');
