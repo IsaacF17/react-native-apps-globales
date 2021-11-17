@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller as FormElement, useForm } from 'react-hook-form';
 import { View, Text, TextInput } from 'react-native';
 import { Button } from 'react-native-ui-lib';
@@ -6,23 +6,26 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { ItemValue } from '@react-native-community/picker/typings/Picker';
 import { Picker } from '@react-native-community/picker';
 import uuid from 'react-native-uuid';
-import IconButton from '../common/Buttons/IconButton/IconButton';
-import ToggleButton from '../common/Buttons/ToggleButton/ToggleButton';
+import IconButton from '../../../common/Buttons/IconButton/IconButton';
+import ToggleButton from '../../../common/Buttons/ToggleButton/ToggleButton';
 import {
   IMovement,
   IScheduledMovement,
   MovementScheduleType,
   MovementType,
-} from '../../types/movements';
-import { formatShortDate, parseDate } from '../../utils/dates';
-import { IDatePickerState } from '../../types/dates';
+} from '../../../../types/movements';
+import { formatShortDate } from '../../../../utils/dates';
+import { fromDateToUnix } from '../../../../utils/unix';
+import { IDatePickerState } from '../../../../types/dates';
 
 import styles from './styles';
 
 export interface IAddNewMovement {
   submitNewSingleMovement: (data: IMovement) => void;
   submitNewScheduledMovement: (data: IScheduledMovement) => void;
+  updateSingleMovement: (data: IMovement) => Promise<void>;
   updateScheduledMovement: (newData: IScheduledMovement) => void;
+  singleMovement?: IMovement | null | undefined;
   scheduledMovement?: IScheduledMovement | null | undefined;
   initialType?: MovementType;
   initialScheduleType?: MovementScheduleType;
@@ -32,21 +35,33 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
   const {
     submitNewSingleMovement,
     submitNewScheduledMovement,
+    updateSingleMovement,
     updateScheduledMovement,
+    singleMovement,
     scheduledMovement,
     initialType,
     initialScheduleType,
   } = props;
 
+  const getInitialDate = (): Date => {
+    if (singleMovement?.id) {
+      return new Date(singleMovement.date);
+    } else if (scheduledMovement?.id) {
+      return new Date(scheduledMovement.nextDate);
+    } else {
+      return new Date(Date.now());
+    }
+  };
+
   const [globalUniqueId] = useState<string>(uuid.v4().toString());
-  const [isUpdating] = useState<boolean>(!!scheduledMovement?.id);
+  const [isUpdating, setIsUpdating] = useState<boolean>(
+    !!scheduledMovement?.id || !!singleMovement?.id,
+  );
   const [toggleScheduleType, setToggleScheduleType] =
     useState<MovementScheduleType>(initialScheduleType ?? 'single');
   const [datePickerState, setDatePickerState] = useState<IDatePickerState>({
     isOpen: false,
-    currentDate: scheduledMovement?.nextDate
-      ? parseDate(scheduledMovement?.nextDate)
-      : new Date(),
+    currentDate: getInitialDate(),
   });
 
   const {
@@ -54,6 +69,10 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
     handleSubmit,
     formState: { errors },
   } = useForm<IMovement & IScheduledMovement>();
+
+  useEffect(() => {
+    setIsUpdating(!!scheduledMovement?.id || !!singleMovement?.id);
+  }, [scheduledMovement, singleMovement]);
 
   return (
     <View style={styles.mainContainer}>
@@ -101,7 +120,11 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
               )}
               name="name"
               rules={{ required: true }}
-              defaultValue={isUpdating ? scheduledMovement?.name : undefined}
+              defaultValue={
+                isUpdating
+                  ? singleMovement?.name ?? scheduledMovement?.name
+                  : undefined
+              }
             />
             {errors.name && (
               <Text style={styles.formErrorMessage}>Nombre requerido</Text>
@@ -114,7 +137,8 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
                 control={control}
                 name="type"
                 defaultValue={
-                  (isUpdating && scheduledMovement?.type) ||
+                  (isUpdating &&
+                    (singleMovement?.type ?? scheduledMovement?.type)) ||
                   initialType ||
                   'income'
                 }
@@ -122,8 +146,9 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
                   <ToggleButton
                     style={styles.toggleButton}
                     initialLabelIndex={
-                      (isUpdating && scheduledMovement?.type === 'expense') ||
-                      initialType === 'expense'
+                      (singleMovement?.type ??
+                        scheduledMovement?.type ??
+                        initialType) === 'expense'
                         ? 1
                         : 0
                     }
@@ -154,7 +179,11 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
                 )}
                 name="value"
                 rules={{ required: true, pattern: /^\d+$/ }}
-                defaultValue={isUpdating ? scheduledMovement?.value : undefined}
+                defaultValue={
+                  isUpdating
+                    ? singleMovement?.value ?? scheduledMovement?.value
+                    : undefined
+                }
               />
               {errors.value && (
                 <Text style={styles.formErrorMessage}>
@@ -171,7 +200,11 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
               <ToggleButton
                 disabled={isUpdating}
                 style={styles.toggleButton}
-                initialLabelIndex={initialScheduleType === 'scheduled' ? 1 : 0}
+                initialLabelIndex={
+                  scheduledMovement?.id ?? initialScheduleType === 'scheduled'
+                    ? 1
+                    : 0
+                }
                 onChange={(activeLabel, activeIndex) => {
                   setToggleScheduleType(
                     activeIndex === 0 ? 'single' : 'scheduled',
@@ -187,9 +220,7 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
               <FormElement
                 control={control}
                 name="periodicity"
-                defaultValue={
-                  isUpdating ? scheduledMovement?.periodicity : 'weekly'
-                }
+                defaultValue={scheduledMovement?.periodicity ?? 'weekly'}
                 render={({ field: { onChange, value } }) => (
                   <Picker
                     key={`new-movement-periodicity-picker-${globalUniqueId}`}
@@ -236,7 +267,9 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
                 />
               )}
               name="details"
-              defaultValue={isUpdating ? scheduledMovement?.details : undefined}
+              defaultValue={
+                singleMovement?.details ?? scheduledMovement?.details
+              }
             />
           </View>
         </View>
@@ -245,13 +278,19 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
             style={styles.saveButton}
             label="Guardar"
             onPress={handleSubmit(data => {
+              const newDate = fromDateToUnix(datePickerState.currentDate, true);
               if (toggleScheduleType === 'single') {
                 // @ts-ignore
                 delete data.periodicity;
-                data.date = formatShortDate(datePickerState.currentDate);
-                submitNewSingleMovement(data);
+                data.date = newDate;
+                if (isUpdating && singleMovement?.id) {
+                  data.id = singleMovement.id;
+                  updateSingleMovement(data);
+                } else {
+                  submitNewSingleMovement(data);
+                }
               } else if (toggleScheduleType === 'scheduled') {
-                data.nextDate = formatShortDate(datePickerState.currentDate);
+                data.nextDate = newDate;
                 if (isUpdating && scheduledMovement?.id) {
                   data.id = scheduledMovement.id;
                   updateScheduledMovement(data);

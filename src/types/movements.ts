@@ -12,10 +12,10 @@ interface Movement {
 }
 
 export interface IMovement extends Movement {
-  date: string;
+  date: number; // Unix
 }
 
 export interface IScheduledMovement extends Movement {
   periodicity: MovementPeriodicity;
-  nextDate: string;
+  nextDate: number; // Unix
 }

@@ -14,15 +14,33 @@ interface IProps {
   data: any;
   disabledLeftContent?: boolean;
   disabledRightContent?: boolean;
+  disableNestedScrollView?: boolean;
   leftContent?: IHideContent;
   rightContent?: IHideContent;
   leftFunction?: (data: any) => void;
   rightFunction?: (data: any) => void;
 }
 
+const defaultLeftContent = {
+  title: 'INFO',
+  icon_name: 'info-circle',
+};
+
+const defaultRightContent = {
+  title: 'Quitar',
+  icon_name: 'trash',
+};
+
 export const SwipeableList: React.FC<IProps> = props => {
+  const { leftContent, rightContent } = props;
+
+  const scrollEnabled = props.disableNestedScrollView ?? false;
+
   return (
     <SwipeListView
+      nestedScrollEnabled={scrollEnabled}
+      scrollEnabled={scrollEnabled}
+      disableScrollViewPanResponder={!scrollEnabled}
       data={props.data}
       renderItem={(data: any, rowMap) => (
         <>
@@ -32,18 +50,15 @@ export const SwipeableList: React.FC<IProps> = props => {
       renderHiddenItem={(data, rowMap) => (
         <View style={styles.hide_content_container}>
           {!props.disabledLeftContent && (
-            <TouchableHighlight
-              onPress={() =>
-                props.leftFunction ? props.leftFunction(data.item) : null
-              }>
+            <TouchableHighlight onPress={() => props.leftFunction?.(data.item)}>
               <View style={styles.left_content}>
                 <Text style={styles.left_content_title}>
-                  {props.leftContent?.title}
+                  {(leftContent ?? defaultLeftContent)?.title}
                 </Text>
                 <Icon
                   solid
                   size={30}
-                  name={`${props.leftContent?.icon_name}`}
+                  name={`${(leftContent ?? defaultLeftContent)?.icon_name}`}
                   type="font-awesome"
                   color="white"
                   tvParallaxProperties={undefined}
@@ -53,17 +68,15 @@ export const SwipeableList: React.FC<IProps> = props => {
           )}
           {!props.disabledRightContent && (
             <TouchableHighlight
-              onPress={() =>
-                props.leftFunction ? props.leftFunction(data.item) : null
-              }>
+              onPress={() => props.rightFunction?.(data.item)}>
               <View style={styles.right_content}>
                 <Text style={styles.right_content_title}>
-                  {props.rightContent?.title}
+                  {(rightContent ?? defaultRightContent)?.title}
                 </Text>
                 <Icon
                   solid
                   size={30}
-                  name={`${props.rightContent?.icon_name}`}
+                  name={`${(rightContent ?? defaultRightContent)?.icon_name}`}
                   type="font-awesome"
                   color="white"
                   tvParallaxProperties={undefined}

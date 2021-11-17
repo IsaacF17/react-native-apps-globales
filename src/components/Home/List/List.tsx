@@ -1,48 +1,43 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Avatar } from 'react-native-elements';
+import { IMovement } from '../../../types/movements';
+import { formatShortDate } from '../../../utils/dates';
+
 import styles from './styles';
 
-interface IHideContent {
-  title?: string;
-  icon_name?: string;
-}
+export const List: React.FC<{ data: IMovement }> = props => {
+  const { date, name, type, value } = props.data;
 
-interface IListData {
-  title?: string;
-  subtitle?: string;
-  icon_name?: string;
-  right_title?: string;
-  right_subtitle?: string;
-  right_content?: IHideContent;
-  left_content?: IHideContent;
-}
-
-export const List: React.FC<any> = (props?) => {
-  const data = props.data;
   return (
     <>
       <View style={styles.rowFront}>
-        <Avatar
-          rounded
-          icon={{
-            name: 'spotify',
-            type: 'font-awesome',
-            color: 'green',
-          }}
-          iconStyle={{ marginTop: -2 }}
-          size={70}
-        />
-        <View>
-          <Text style={[styles.tex, styles.title]}>{data?.title}</Text>
-          <Text style={[styles.tex, styles.subTitle]}>{data?.subtitle}</Text>
+        <View style={styles.leftContainer}>
+          <Avatar
+            rounded
+            icon={{
+              name: 'spotify',
+              type: 'font-awesome',
+              color: 'green',
+            }}
+            iconStyle={styles.avatar}
+            size={70}
+          />
         </View>
-        <View>
-          <Text style={[styles.tex, styles.right_title]}>
-            {data?.right_title}
+        <View style={styles.middleContainer}>
+          <Text style={[styles.text, styles.title]}>{name}</Text>
+          <Text style={[styles.text, styles.subtitle]}>
+            {formatShortDate(new Date(date))}
           </Text>
-          <Text style={[styles.tex, styles.right_subtitle]}>
-            {data?.right_subtitle}
+        </View>
+        <View style={styles.rightContainer}>
+          <Text
+            style={[
+              styles.text,
+              styles.value,
+              { color: type === 'expense' ? '#ff3030' : '#30ff72' },
+            ]}>
+            {`${type === 'expense' ? '- ' : '  '}₡${value}`}
           </Text>
         </View>
       </View>

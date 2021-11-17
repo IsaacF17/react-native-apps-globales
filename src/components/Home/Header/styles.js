@@ -11,7 +11,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginTop: 15,
-    marginLeft: 5,
-    marginRight: 5,
+    marginLeft: 10,
+    marginRight: 10,
   },
 });

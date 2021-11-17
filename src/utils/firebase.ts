@@ -9,11 +9,16 @@ import firestore, {
  * se agrega el where(userId == ...)
  */
 export interface IGenericCollection<Type> {
-  collection?: FirebaseFirestoreTypes.CollectionReference<Type>;
+  collection: FirebaseFirestoreTypes.CollectionReference<Type>;
   add: (data: Type) => Promise<string | null>;
+  addAll: (dataList: Array<Type>) => Promise<boolean>;
   get: (id: string, userId?: string) => Promise<Type | null>;
   getAll: (userId?: string) => Promise<Array<Type> | null>;
   update: (newData: Type & { id: string }, userId?: string) => Promise<boolean>;
+  updateAll: (
+    newDataList: Array<Type & { id: string }>,
+    userId?: string,
+  ) => Promise<boolean>;
   remove: (id: string, userId?: string) => Promise<boolean>;
 }
 
@@ -46,6 +51,28 @@ export const getGenericCollection = <Type>(
       console.error(`Error while adding new doc to collection: ${name}`);
       console.error(`Error: ${error}`);
       return null;
+    }
+  };
+
+  const addAll = async (dataList: Array<Type>): Promise<boolean> => {
+    if (dataList.length) {
+      try {
+        const batch = firebase.firestore().batch();
+        dataList.forEach((data: Type) => {
+          const docRef = collection.doc();
+          batch.set(docRef, data);
+        });
+        await batch.commit();
+        return true;
+      } catch (error) {
+        console.error(
+          `Error while adding list of new doc to collection: ${name}`,
+        );
+        console.error(`Error: ${error}`);
+        return false;
+      }
+    } else {
+      return true;
     }
   };
 
@@ -106,6 +133,32 @@ export const getGenericCollection = <Type>(
     }
   };
 
+  const updateAll = async (
+    newDataList: Array<Type & { id: string }>,
+    userId?: string,
+  ): Promise<boolean> => {
+    if (newDataList.length) {
+      try {
+        const batch = firebase.firestore().batch();
+        newDataList.forEach((data: Type & { id: string }) => {
+          const docRef = collection.doc(data.id);
+          // TODO: if userId then check if current user is owner
+          batch.update(docRef, data);
+        });
+        await batch.commit();
+        return true;
+      } catch (error) {
+        console.error(
+          `Error while adding list of new doc to collection: ${name}`,
+        );
+        console.error(`Error: ${error}`);
+        return false;
+      }
+    } else {
+      return true;
+    }
+  };
+
   const remove = async (id: string, userId?: string): Promise<boolean> => {
     const document = await get(id, userId);
     try {
@@ -123,9 +176,11 @@ export const getGenericCollection = <Type>(
   return {
     collection,
     add,
+    addAll,
     get,
     getAll,
     update,
+    updateAll,
     remove,
   };
 };

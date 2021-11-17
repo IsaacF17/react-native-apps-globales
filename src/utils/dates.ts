@@ -11,7 +11,13 @@ export const formatShortDate = (date: Date) => {
   return `${splittedDate[1]}/${splittedDate[0]}/${splittedDate[2]}`;
 };
 
-export const parseDate = (date: string) => {
+export const formatShortDateAndTime = (date: Date) => {
+  return `${formatShortDate(
+    date,
+  )} - ${date.getUTCHours()}:${date.getUTCMinutes()}:${date.getUTCSeconds()}`;
+};
+
+export const parseToDate = (date: string) => {
   try {
     const splittedDate = date.split('/');
     return new Date(
