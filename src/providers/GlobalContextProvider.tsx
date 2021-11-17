@@ -24,13 +24,12 @@ const GlobalContextProvider: React.FC = props => {
   };
 
   useEffect(() => {
-    // if (user.id) {
-    console.log(`Fallas loading scheduled movements...`);
-    scheduledService
-      .getAll()
-      .then(response => setScheduledMovements(response ?? []));
-    // }
-  }, [user.id]);
+    if (user.id) {
+      scheduledService
+        .getAll(user.id)
+        .then(response => setScheduledMovements(response ?? []));
+    }
+  }, [user, user.id]);
 
   return (
     <GlobalContext.Provider value={contextValue}>

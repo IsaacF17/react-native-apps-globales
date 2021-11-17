@@ -4,6 +4,7 @@ export type MovementPeriodicity = 'weekly' | 'biweekly' | 'monthly' | 'annual';
 
 interface Movement {
   id: string;
+  userId: string;
   type: MovementType;
   name: string;
   details?: string;
