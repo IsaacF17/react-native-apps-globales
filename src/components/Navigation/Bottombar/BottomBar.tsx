@@ -5,6 +5,7 @@ import { Icon } from 'react-native-elements';
 import { RegistrationScreen } from '../../Registration/Registration';
 import ScheduledMovements from '../../ScheduledMovements/ScheduledMovements';
 import Categories from '../../Categories/Categories';
+import { Reports } from '../../Reports/Reports';
 import NewMovementContext from '../../../contexts/NewMovementContext';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -84,7 +85,7 @@ export function BottomBar() {
       />
       <Tab.Screen
         name="Reportes"
-        component={RegistrationScreen}
+        component={Reports}
         options={{
           tabBarIcon: () => (
             <Icon
