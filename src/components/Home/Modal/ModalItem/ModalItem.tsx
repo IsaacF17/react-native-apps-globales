@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { IScheduledMovement } from '../../../../types/movements';
 
@@ -20,17 +20,22 @@ const ModalItem: React.FC<IModalItem> = props => {
   }, [isChecked]);
 
   return (
-    <View style={styles.mainContainer}>
-      <Text>{item.name}</Text>
-      <BouncyCheckbox
-        isChecked={isChecked}
-        fillColor="#27a02b"
-        iconStyle={{ borderColor: '#27a02b' }}
-        onPress={(isChecked: boolean) => {
-          setIsChecked(isChecked);
-        }}
-      />
-    </View>
+    <TouchableWithoutFeedback
+      style={{ flex: 1 }}
+      onPress={() => setIsChecked(prevState => !prevState)}>
+      <View style={styles.mainContainer}>
+        <Text style={styles.itemName}>{item.name}</Text>
+        <BouncyCheckbox
+          isChecked={isChecked}
+          disableBuiltInState
+          fillColor="#27a02b"
+          iconStyle={{ borderColor: '#27a02b' }}
+          onPress={(isChecked: boolean) => {
+            setIsChecked(isChecked);
+          }}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

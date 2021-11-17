@@ -25,6 +25,8 @@ export const fromDateToUnix = (date: Date, reset?: boolean): number =>
 
 export const getToday = (): number => resetDay(Date.now());
 
+export const getYesterday = (): number => getToday() - 24 * 60 * 60 * 1000;
+
 export const getTomorrow = (): number => getToday() + 24 * 60 * 60 * 1000;
 
 export const getThisWeekUnixRange = (): {

@@ -20,11 +20,13 @@ export default StyleSheet.create({
   },
   middleContainer: {
     flex: 5,
+    marginTop: -5,
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
   rightContainer: {
     flex: 3,
+    marginTop: -5,
     justifyContent: 'center',
     alignItems: 'flex-start',
   },

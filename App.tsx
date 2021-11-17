@@ -5,15 +5,18 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
 import { Screens } from './src/components/Navigation/Screens/Screens';
+import NewMovementProvider from './src/providers/NewMovementProvider';
 
 export default function App() {
   return (
     <GlobalContextProvider>
       <SafeAreaProvider>
-        <NavigationContainer>
-          <StatusBar />
-          <Screens />
-        </NavigationContainer>
+        <NewMovementProvider>
+          <NavigationContainer>
+            <StatusBar />
+            <Screens />
+          </NavigationContainer>
+        </NewMovementProvider>
       </SafeAreaProvider>
     </GlobalContextProvider>
   );

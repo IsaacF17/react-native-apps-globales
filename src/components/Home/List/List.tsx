@@ -37,7 +37,7 @@ export const List: React.FC<{ data: IMovement }> = props => {
               styles.value,
               { color: type === 'expense' ? '#ff3030' : '#30ff72' },
             ]}>
-            {`${type === 'expense' ? '- ' : ''}₡${value}`}
+            {`${type === 'expense' ? '- ' : '  '}₡${value}`}
           </Text>
         </View>
       </View>

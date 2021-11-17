@@ -55,10 +55,4 @@ export default StyleSheet.create({
     flex: 1,
     flexShrink: 1,
   },
-  addNewMovementModal: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-  },
 });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import { ICategory } from '../types/categories';
 import { IMovement, IScheduledMovement } from '../types/movements';
 
@@ -26,4 +26,4 @@ export interface IGlobalContextDispatchers {
 
 export type IGlobalContext = IGlobalContextData & IGlobalContextDispatchers;
 
-export default React.createContext<IGlobalContext>({} as IGlobalContext);
+export default createContext<IGlobalContext>({} as IGlobalContext);
