@@ -6,10 +6,12 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#161d1d',
   },
   title: {
     fontSize: 30,
     marginBottom: 15,
+    color: '#989C96',
   },
   logo: {
     flex: 1,
@@ -28,9 +30,10 @@ export default StyleSheet.create({
     marginTop: 25,
     marginBottom: 10,
     paddingLeft: 16,
+    backgroundColor: '#E8EEF2',
   },
   button: {
-    backgroundColor: '#788eec',
+    backgroundColor: '#415A77',
     marginTop: 30,
     height: 48,
     width: 150,
@@ -44,14 +47,15 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   footerText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#2e2e2d',
     marginTop: 15,
+    color: '#989C96',
   },
   footerLink: {
-    color: '#788eec',
+    color: '#77B6EA',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
   error: {
     color: 'red',

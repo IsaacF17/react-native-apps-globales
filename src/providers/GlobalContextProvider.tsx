@@ -22,8 +22,10 @@ const GlobalContextProvider: React.FC = props => {
   const [homeChartData, setHomeChartData] = useState<any>({});
 
   const loadMovements = async () => {
-    const response = await MovementService.getAllThisWeek(user.id);
-    setMovementList(response ? orderBy(response, ['date'], ['asc']) : []);
+    if (user.id) {
+      const response = await MovementService.getAllThisWeek(user.id);
+      setMovementList(response ? orderBy(response, ['date'], ['asc']) : []);
+    }
   };
 
   const loadScheduledMovements = async () => {

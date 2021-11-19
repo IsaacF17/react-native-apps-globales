@@ -11,6 +11,8 @@ interface IChartProps {
 const CustomLineChart = (props: IChartProps) => {
   const { data, type, titles } = props;
 
+  console.log(JSON.stringify(data, null, 1));
+
   if (data) Object.assign(data, { legend: titles });
 
   return (

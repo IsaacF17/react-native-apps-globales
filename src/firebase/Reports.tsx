@@ -2,10 +2,15 @@ import firestore from '@react-native-firebase/firestore';
 
 const movementsRef = firestore().collection('movements');
 
-export const getReportData = async (fromDate: number, toDate: number) => {
+export const getReportData = async (
+  fromDate: number,
+  toDate: number,
+  userId: string,
+) => {
   const data: any[] = [];
   await movementsRef
     .orderBy('date', 'asc')
+    .where('userId', '==', userId)
     .startAt(fromDate)
     .endAt(toDate)
     .get()
