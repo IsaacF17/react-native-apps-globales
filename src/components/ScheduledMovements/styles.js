@@ -15,6 +15,7 @@ export default StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     alignSelf: 'center',
+    color: '#e5ebec',
   },
   headerButtonContainer: {
     flex: 1,
@@ -33,10 +34,9 @@ export default StyleSheet.create({
   filersContainer: {
     flex: 1,
     justifyContent: 'center',
-    paddingRight: '30%',
   },
   tableContainer: {
-    flex: 8,
+    flex: 7,
   },
   tableHeader: {
     flexDirection: 'row',
@@ -50,6 +50,7 @@ export default StyleSheet.create({
     textAlignVertical: 'center',
     fontSize: 22,
     paddingVertical: 10,
+    color: '#e5ebec',
   },
   tableScrollView: {
     flex: 1,

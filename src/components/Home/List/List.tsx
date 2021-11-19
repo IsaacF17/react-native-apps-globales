@@ -16,9 +16,9 @@ export const List: React.FC<{ data: IMovement }> = props => {
           <Avatar
             rounded
             icon={{
-              name: iconCategoryName || 'spotify',
+              name: iconCategoryName || 'tags',
               type: 'font-awesome',
-              color: 'green',
+              color: '#6dbdb8',
             }}
             iconStyle={styles.avatar}
             size={70}

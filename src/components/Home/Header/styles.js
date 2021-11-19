@@ -14,4 +14,7 @@ export default StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
+  hi: {
+    color: '#e5ebec',
+  },
 });

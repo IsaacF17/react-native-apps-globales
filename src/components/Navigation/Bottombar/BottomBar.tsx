@@ -19,7 +19,7 @@ export function BottomBar() {
       inactiveColor="black"
       activeColor="white"
       barStyle={{
-        backgroundColor: '#1E2749',
+        backgroundColor: '#142629',
       }}>
       <Tab.Screen
         name="Inicio"

@@ -9,7 +9,7 @@ export default StyleSheet.create({
     borderRadius: 5,
     borderStyle: 'solid',
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: 'black',
     flex: 1,
     flexDirection: 'row',
   },

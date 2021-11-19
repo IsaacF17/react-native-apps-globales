@@ -8,7 +8,8 @@ export default StyleSheet.create({
   sectionSubtitle: {
     fontSize: 20,
     marginLeft: 10,
-    marginBottom: 3,
+    marginBottom: 10,
+    color: '#e5ebec',
   },
   modal: {
     alignSelf: 'center',
