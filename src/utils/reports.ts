@@ -14,8 +14,7 @@ export const checkDates = (fromDate: Date, toDate: Date) => {
 
   if (diffByDays <= 7) periods.push('Días');
   else if (diffByWeeks <= 4) periods.push('Semanal');
-  else if (diffByWeeks >= 4 && diffByWeeks <= 12)
-    periods.push('Quincenal', 'Mensual');
+  else if (diffByWeeks >= 4 && diffByWeeks <= 12) periods.push('Mensual');
   else {
     if (diffByMonths >= 2 && diffByMonths <= 12) periods.push('Mensual');
     else if (diffByMonths > 12) periods.push('Anual');
@@ -80,35 +79,63 @@ export const convertToWeekData = (
             const newValue = weeksData[key][el.type] + Number(el.value);
             Object.assign(weeksData[key], { [el.type]: newValue });
           }
-      }else Object.assign(weeksData, { [key]: { [el.type]: Number(el.value) } });
-    }
+        } else
+          Object.assign(weeksData, { [key]: { [el.type]: Number(el.value) } });
+      }
     });
   });
   return convertToChartData(weeksData);
 };
 
-const convertToChartData = (data: any) => { // convierte los datos en un JSON legible para los Gráficos
+const convertToChartData = (data: any) => {
+  // convierte los datos en un JSON legible para los Gráficos
   const chartObjectExpenses = {};
   const chartObjectIncomes = {};
+  const chartObjectFlow = {};
+  const chartObjectComparison = {};
 
   const keys = Object.keys(data);
   const expenses: any = [];
   const incomes: any = [];
-  console.log('------------------------------------');
+  const moneyFlow: any = [];
 
   Object.assign(chartObjectExpenses, { labels: [...keys] });
   Object.assign(chartObjectIncomes, { labels: [...keys] });
+  Object.assign(chartObjectFlow, { labels: [...keys] });
+  Object.assign(chartObjectComparison, { labels: [...keys] });
 
   Object.entries(data).forEach(([key, value]: any) => {
     if (value.expense) expenses.push(value.expense);
     if (value.income) incomes.push(value.income);
   });
 
-  Object.assign(chartObjectIncomes, {datasets: [{data: [...incomes]}]});
-  Object.assign(chartObjectExpenses, {datasets: [{data: [...expenses]}]});
+  const arrayLegth =
+    incomes.length > expenses.length ? incomes.length : expenses.length;
 
-  console.log("Expenses", JSON.stringify(chartObjectExpenses, null, 1));
-  console.log("Incomes", JSON.stringify(chartObjectIncomes, null, 1));
+  for (let i = 0; i < arrayLegth; i++) {
+    const val = (incomes[i] || 0) - (expenses[i] || 0);
+    moneyFlow.push(val);
+  }
 
-  return [chartObjectIncomes, chartObjectExpenses];
+  Object.assign(chartObjectIncomes, { datasets: [{ data: [...incomes] }] });
+  Object.assign(chartObjectExpenses, { datasets: [{ data: [...expenses] }] });
+  Object.assign(chartObjectComparison, {
+    datasets: [
+      { data: [...expenses], color: (opacity = 1) => `red` },
+      { data: [...incomes], color: (opacity = 1) => `green` },
+    ],
+  });
+  Object.assign(chartObjectFlow, { datasets: [{ data: [...moneyFlow] }] });
+
+  //Debug purpose logs
+  //console.log("Expenses", JSON.stringify(chartObjectExpenses, null, 1));
+  //console.log("Incomes", JSON.stringify(chartObjectIncomes, null, 1));
+  //console.log("Flujo", JSON.stringify(chartObjectFlow, null, 1));
+
+  return [
+    chartObjectIncomes,
+    chartObjectExpenses,
+    chartObjectComparison,
+    chartObjectFlow,
+  ];
 };

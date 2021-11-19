@@ -31,13 +31,12 @@ const Categories: React.FC<ICategories> = props => {
   const [category, setCategory] = useState({});
 
   const onSubmitNewCategory = async (data: any, categoryID?: string) => {
-    console.log('TODO: Save new category', `Data: ${JSON.stringify(data)}`);
     if (categoryID) {
-      updateCategory(data, categoryID, user.user_id);
+      updateCategory(data, categoryID, user.id);
     } else {
-      addUserCategory(data, user.user_id);
+      addUserCategory(data, user.id);
     }
-    const newCategoriesList = await getCategories(user.user_id);
+    const newCategoriesList = await getCategories(user.id);
     setCategoriesList(newCategoriesList);
     setCopyCategoriesList(newCategoriesList);
     setIsAddNewOverlayOpen(false);
@@ -59,9 +58,11 @@ const Categories: React.FC<ICategories> = props => {
   };
 
   const removeCategory = async (data?: any) => {
-    const res = await deleteCategory(user.user_id, data.id);
+    const res = await deleteCategory(user.id, data.id);
     if (res) {
-      const newCategoriesList = await getCategories(user.user_id);
+      const newCategoriesList = await getCategories(user.id);
+      console.log(newCategoriesList);
+
       setCategoriesList(newCategoriesList);
       setCopyCategoriesList(newCategoriesList);
     }

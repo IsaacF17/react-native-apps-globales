@@ -1,5 +1,6 @@
 // Parsers
 
+import { Moment } from 'moment';
 export const unixToShortDate = (date: number): string => {
   const fullYear = getFullYear(date);
   const month = getMonth(date) + 1;

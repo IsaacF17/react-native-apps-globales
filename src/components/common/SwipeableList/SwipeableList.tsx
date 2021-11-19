@@ -35,7 +35,6 @@ export const SwipeableList: React.FC<IProps> = props => {
   const { leftContent, rightContent } = props;
 
   const scrollEnabled = props.disableNestedScrollView ?? false;
-
   return (
     <SwipeListView
       nestedScrollEnabled={scrollEnabled}
@@ -47,43 +46,46 @@ export const SwipeableList: React.FC<IProps> = props => {
           <props.childComponent data={data.item} key={rowMap} />
         </>
       )}
-      renderHiddenItem={(data, rowMap) => (
+      renderHiddenItem={(data: any, rowMap) => (
         <View style={styles.hide_content_container}>
-          {!props.disabledLeftContent && (
-            <TouchableHighlight onPress={() => props.leftFunction?.(data.item)}>
-              <View style={styles.left_content}>
-                <Text style={styles.left_content_title}>
-                  {(leftContent ?? defaultLeftContent)?.title}
-                </Text>
-                <Icon
-                  solid
-                  size={30}
-                  name={`${(leftContent ?? defaultLeftContent)?.icon_name}`}
-                  type="font-awesome"
-                  color="white"
-                  tvParallaxProperties={undefined}
-                />
-              </View>
-            </TouchableHighlight>
-          )}
-          {!props.disabledRightContent && (
-            <TouchableHighlight
-              onPress={() => props.rightFunction?.(data.item)}>
-              <View style={styles.right_content}>
-                <Text style={styles.right_content_title}>
-                  {(rightContent ?? defaultRightContent)?.title}
-                </Text>
-                <Icon
-                  solid
-                  size={30}
-                  name={`${(rightContent ?? defaultRightContent)?.icon_name}`}
-                  type="font-awesome"
-                  color="white"
-                  tvParallaxProperties={undefined}
-                />
-              </View>
-            </TouchableHighlight>
-          )}
+          {!props.disabledLeftContent &&
+            !data.item.hasOwnProperty('notSwipeable') && (
+              <TouchableHighlight
+                onPress={() => props.leftFunction?.(data.item)}>
+                <View style={styles.left_content}>
+                  <Text style={styles.left_content_title}>
+                    {(leftContent ?? defaultLeftContent)?.title}
+                  </Text>
+                  <Icon
+                    solid
+                    size={30}
+                    name={`${(leftContent ?? defaultLeftContent)?.icon_name}`}
+                    type="font-awesome"
+                    color="white"
+                    tvParallaxProperties={undefined}
+                  />
+                </View>
+              </TouchableHighlight>
+            )}
+          {!props.disabledRightContent &&
+            !data.item.hasOwnProperty('notSwipeable') && (
+              <TouchableHighlight
+                onPress={() => props.rightFunction?.(data.item)}>
+                <View style={styles.right_content}>
+                  <Text style={styles.right_content_title}>
+                    {(rightContent ?? defaultRightContent)?.title}
+                  </Text>
+                  <Icon
+                    solid
+                    size={30}
+                    name={`${(rightContent ?? defaultRightContent)?.icon_name}`}
+                    type="font-awesome"
+                    color="white"
+                    tvParallaxProperties={undefined}
+                  />
+                </View>
+              </TouchableHighlight>
+            )}
         </View>
       )}
       leftOpenValue={70}

@@ -28,7 +28,7 @@ export const checkUserData = (email: string, passw: string) => {
     .get()
     .then(snapShot => {
       if (snapShot.empty) return;
-      return { ...snapShot.docs[0].data(), user_id: snapShot.docs[0].id };
+      return { ...snapShot.docs[0].data(), id: snapShot.docs[0].id };
     });
 };
 

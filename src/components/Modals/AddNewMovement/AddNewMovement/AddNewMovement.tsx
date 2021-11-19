@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Controller as FormElement, useForm } from 'react-hook-form';
 import { View, Text, TextInput } from 'react-native';
 import { Button } from 'react-native-ui-lib';
@@ -17,8 +17,9 @@ import {
 import { formatShortDate } from '../../../../utils/dates';
 import { fromDateToUnix } from '../../../../utils/unix';
 import { IDatePickerState } from '../../../../types/dates';
-
+import SelectDropdown from 'react-native-select-dropdown';
 import styles from './styles';
+import GlobalContext from '../../../../contexts/GlobalContext';
 
 export interface IAddNewMovement {
   submitNewSingleMovement: (data: IMovement) => void;
@@ -74,19 +75,22 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
     setIsUpdating(!!scheduledMovement?.id || !!singleMovement?.id);
   }, [scheduledMovement, singleMovement]);
 
+  const { categoriesList } = useContext(GlobalContext);
+
+  const allCategories = categoriesList.map(cat => cat.name);
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.modalView}>
         <View style={[styles.defaultContainer, styles.headerContainer]}>
           <View style={styles.iconContainer}>
             <IconButton
-              name="taxi"
+              name="database"
               iconProps={{ size: 25 }}
               style={styles.iconButtons}
             />
           </View>
           <View style={styles.dataContainer}>
-            <Text style={styles.headerData}>Transporte</Text>
             <Text style={styles.headerData}>
               {formatShortDate(datePickerState.currentDate)}
             </Text>
@@ -128,6 +132,42 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
             />
             {errors.name && (
               <Text style={styles.formErrorMessage}>Nombre requerido</Text>
+            )}
+          </View>
+          <View>
+            <FormElement
+              control={control}
+              name="category"
+              render={({ field: { onChange, value } }) => (
+                <SelectDropdown
+                  data={allCategories}
+                  buttonStyle={{
+                    height: 40,
+                    borderRadius: 10,
+                    marginTop: 10,
+                    marginBottom: 0,
+                    backgroundColor: 'white',
+                    width: '100%',
+                  }}
+                  defaultValue={
+                    singleMovement?.category ?? scheduledMovement?.category
+                  }
+                  defaultButtonText="Selecciona una categoría"
+                  onSelect={(selectedItem, index) => {
+                    onChange(selectedItem);
+                  }}
+                  buttonTextAfterSelection={(selectedItem, index) => {
+                    return selectedItem;
+                  }}
+                  rowTextForSelection={(item, index) => {
+                    return item;
+                  }}
+                />
+              )}
+              rules={{ required: true }}
+            />
+            {errors.category && (
+              <Text style={styles.formErrorMessage}>Categoría requerida</Text>
             )}
           </View>
           <View
@@ -268,7 +308,7 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
               )}
               name="details"
               defaultValue={
-                singleMovement?.details ?? scheduledMovement?.details
+                (singleMovement?.details ?? scheduledMovement?.details) || ''
               }
             />
           </View>
@@ -293,6 +333,7 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
                 data.nextDate = newDate;
                 if (isUpdating && scheduledMovement?.id) {
                   data.id = scheduledMovement.id;
+                  if (!data.details) data.details = '';
                   updateScheduledMovement(data);
                 } else {
                   submitNewScheduledMovement(data);

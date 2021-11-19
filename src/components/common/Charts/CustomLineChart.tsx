@@ -4,19 +4,18 @@ import { LineChart } from 'react-native-chart-kit';
 
 interface IChartProps {
   data: any;
-  type: string;
+  type?: string;
   title: string;
 }
 
 const CustomLineChart = (props: IChartProps) => {
-
   const { data, type, title } = props;
 
-  if (data) Object.assign(data, {legend: [`${title}`]})
+  if (data) Object.assign(data, { legend: [`${title}`] });
 
   return (
     <View>
-      {data &&
+      {data && (
         <LineChart
           data={props?.data}
           width={Dimensions.get('window').width - 15} // from react-native
@@ -35,7 +34,7 @@ const CustomLineChart = (props: IChartProps) => {
               borderRadius: 16,
             },
             propsForDots: {
-              fill: type === 'income' ? 'green' : 'red'
+              fill: type ? (type === 'income' ? 'green' : 'red') : 'white',
             },
           }}
           bezier
@@ -44,9 +43,10 @@ const CustomLineChart = (props: IChartProps) => {
             borderRadius: 12,
             marginLeft: 8,
           }}
-        />}
+        />
+      )}
     </View>
-  )
+  );
 };
 
 export default CustomLineChart;

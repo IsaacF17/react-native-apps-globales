@@ -1,7 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 
 interface category {
-  user_id: string;
+  id: string;
   name: string;
   icon: string;
   description?: string;
@@ -34,7 +34,6 @@ export const updateCategory = async (
 };
 
 export const deleteCategory = async (userID: string, categoryID: string) => {
-  //TODO -- que sucede cuando ya hay una categoria asociado a un moviemiento??? -- No deberia permitirse para que la puya no quede nula
   return await users
     .doc(userID)
     .collection('userCategories')
@@ -50,6 +49,7 @@ export const getCategories = async (userID: string) => {
     .doc(userID)
     .collection('userCategories')
     .get();
+
   if (!userCategoriesData.empty) {
     userCategoriesData.docs.forEach(doc => {
       const newObj = { ...doc.data(), id: doc.id, fromUser: true };
@@ -57,7 +57,7 @@ export const getCategories = async (userID: string) => {
     });
   }
   (await categoriesRef.get()).docs.forEach(doc => {
-    const newObj = { ...doc.data(), id: doc.id };
+    const newObj = { ...doc.data(), id: doc.id, notSwipeable: true };
     data.push(newObj);
   });
   return data;

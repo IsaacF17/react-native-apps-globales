@@ -5,7 +5,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import GlobalContext from '../../contexts/GlobalContext';
 import { IMovement, IScheduledMovement } from '../../types/movements';
 import { SwipeableList } from '../common/SwipeableList/SwipeableList';
-import HomeChart from './Chart/HomeChart';
 import Header from './Header/Header';
 import { List } from './List/List';
 import ModalContent from './Modal/Modal';
@@ -17,6 +16,7 @@ import { orderBy } from 'lodash';
 
 import styles from './styles';
 import NewMovementContext from '../../contexts/NewMovementContext';
+import CustomLineChart from '../common/Charts/CustomLineChart';
 
 export interface IHomeScreen {
   navigation: any;
@@ -29,6 +29,8 @@ const HomeScreen: React.FC<IHomeScreen> = () => {
     movementList,
     refreshMovementList,
     expiredMovements,
+    homeChartData,
+    user,
   } = useContext(GlobalContext);
 
   const { setIsModalOpen, setEditingMovement, removeSingleMovement } =
@@ -50,6 +52,7 @@ const HomeScreen: React.FC<IHomeScreen> = () => {
       movement => ({
         id: 'undefined',
         name: movement.name,
+        category: movement.category,
         userId: movement.userId,
         type: movement.type,
         value: movement.value,
@@ -113,8 +116,8 @@ const HomeScreen: React.FC<IHomeScreen> = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
-        <Header />
-        <HomeChart />
+        <Header user_name={user.name} />
+        <CustomLineChart data={homeChartData} title="Flujo" />
         <ScrollView>
           {weekMovements?.today?.length ? (
             <>
