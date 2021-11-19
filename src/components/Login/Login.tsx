@@ -1,15 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { View, Text, TextInput } from 'react-native';
-import styles from '../Registration/styles';
-import { Button } from 'react-native-elements';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import styles from './styles';
 import { checkUserData } from '../../firebase/Users';
 import { getCategories } from '../../firebase/Categories';
 import GlobalContext from '../../contexts/GlobalContext';
-import { fromDateToUnix } from '../../utils/unix';
-import moment from 'moment';
-import { getReportData } from '../../firebase/Reports';
-import { convertToMonthOrDayData } from '../../utils/reports';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const {
@@ -18,34 +13,23 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     formState: { errors },
   } = useForm();
 
-  const { setCategoriesList, setUser, setHomeChartData } =
-    useContext(GlobalContext);
+  const { setCategoriesList, setUser } = useContext(GlobalContext);
+
+  const [error, setError] = useState('');
 
   const onSubmit = async (data: any) => {
-    //data.email, data.pass
-    const userResponse = await checkUserData('admin@mail.com', '123');
+    const userResponse = await checkUserData(data.email, data.pass);
     if (userResponse) {
       setUser(userResponse);
-      //setUser({ id: 'cufVpoJMKg6Xq1tKryo7' });
       const categories = await getCategories(userResponse.id);
       setCategoriesList(categories);
-      const fromDate = fromDateToUnix(
-        moment(new Date()).subtract(2, 'month').toDate(),
-      ); // 2 meses antes de la fecha de hoy
-      const toDate = fromDateToUnix(new Date());
-      const dbData = await getReportData(fromDate, toDate);
-      const chartData: any = convertToMonthOrDayData(dbData, 'month');
-      setHomeChartData(chartData[2]);
       navigation.navigate('Home');
     }
+    setError('Correo electrónico y/o contraseña incorrecto');
   };
 
   const onFooterLinkPress = () => {
     navigation.navigate('Registro');
-  };
-
-  const googleSignIn = () => {
-    // onGoogleButtonPress();
   };
 
   return (
@@ -63,7 +47,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
           />
         )}
         name="email"
-        //rules={{ required: true }}
+        rules={{ required: true }}
         defaultValue=""
       />
       {errors.email && (
@@ -77,29 +61,23 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
+            secureTextEntry
             placeholder="Contraseña"
             textContentType="password"
           />
         )}
         name="pass"
-        //rules={{ required: true }}
+        rules={{ required: true }}
         defaultValue=""
       />
       {errors.pass?.type === 'required' && (
         <Text style={styles.error}>Este campo es requerido</Text>
       )}
-      <Button
-        title="Iniciar Sesión"
-        onPress={handleSubmit(data => onSubmit(data))}></Button>
-      <View>
-        <Text style={styles.footerText}>
-          Utiliza tu cuenta de
-          <Text onPress={googleSignIn} style={styles.footerLink}>
-            {' '}
-            Google
-          </Text>
+      {error ? (
+        <Text style={[styles.error, { marginTop: 3, marginBottom: 10 }]}>
+          {error}
         </Text>
-      </View>
+      ) : null}
       <View>
         <Text style={styles.footerText}>
           No tengo una cuenta.
@@ -109,6 +87,11 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
           </Text>
         </Text>
       </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleSubmit(data => onSubmit(data))}>
+        <Text style={styles.buttonTitle}>Iniciar Sesión</Text>
+      </TouchableOpacity>
     </View>
   );
 };

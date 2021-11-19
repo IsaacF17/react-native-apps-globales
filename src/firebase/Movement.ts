@@ -2,20 +2,21 @@ import { getGenericCollection } from '../utils/firebase';
 import { IMovement } from '../types/movements';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { getThisWeekUnixRange } from '../utils/unix';
+import firestore from '@react-native-firebase/firestore';
 
 const { collection, add, addAll, get, getAll, update, updateAll, remove } =
   getGenericCollection<IMovement>('movements');
 
-const getAllThisWeek = async (userId?: string): Promise<IMovement[] | null> => {
+const ref = firestore().collection('movements');
+
+const getAllThisWeek = async (userId: string): Promise<any> => {
   try {
     const { thisMonday, nextMonday } = getThisWeekUnixRange();
-    const query: FirebaseFirestoreTypes.Query<IMovement> = collection
+    const response = await ref
       .where('date', '>=', thisMonday)
-      .where('date', '<', nextMonday);
-    if (userId?.length) {
-      query.where('userId', '==', userId);
-    }
-    const response = await query.get();
+      .where('date', '<', nextMonday)
+      .where('userId', '==', userId)
+      .get();
     return response.docs.map(doc => ({ ...doc.data(), id: doc.id }));
   } catch (error) {
     console.error(`Error while fetching this week movements`);

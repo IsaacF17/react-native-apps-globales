@@ -121,9 +121,18 @@ const convertToChartData = (data: any) => {
   Object.assign(chartObjectExpenses, { datasets: [{ data: [...expenses] }] });
   Object.assign(chartObjectComparison, {
     datasets: [
-      { data: [...expenses], color: (opacity = 1) => `red` },
-      { data: [...incomes], color: (opacity = 1) => `green` },
-      { data: [...moneyFlow], color: (opacity = 0.5) => `blue` },
+      {
+        data: expenses.length ? [...expenses] : [0],
+        color: (opacity = 1) => `red`,
+      },
+      {
+        data: incomes.length ? [...incomes] : [0],
+        color: (opacity = 1) => `green`,
+      },
+      {
+        data: moneyFlow.length ? [...moneyFlow] : [0],
+        color: (opacity = 0.5) => `blue`,
+      },
     ],
   });
   Object.assign(chartObjectFlow, { datasets: [{ data: [...moneyFlow] }] });

@@ -11,12 +11,15 @@ import ModalContent from './Modal/Modal';
 import { updateNextDates } from '../../utils/scheduledMovements';
 import ScheduledService from '../../firebase/Scheduled';
 import MovementService from '../../firebase/Movement';
-import { getToday, getTomorrow } from '../../utils/unix';
+import { fromDateToUnix, getToday, getTomorrow } from '../../utils/unix';
 import { orderBy } from 'lodash';
 
 import styles from './styles';
 import NewMovementContext from '../../contexts/NewMovementContext';
 import CustomLineChart from '../common/Charts/CustomLineChart';
+import moment from 'moment';
+import { getReportData } from '../../firebase/Reports';
+import { convertToMonthOrDayData } from '../../utils/reports';
 
 export interface IHomeScreen {
   navigation: any;
@@ -29,12 +32,13 @@ const HomeScreen: React.FC<IHomeScreen> = () => {
     movementList,
     refreshMovementList,
     expiredMovements,
-    homeChartData,
     user,
   } = useContext(GlobalContext);
 
   const { setIsModalOpen, setEditingMovement, removeSingleMovement } =
     useContext(NewMovementContext);
+
+  const [chartData, setChartData] = useState<any>();
 
   const [isPendingModalOpen, setIsPendingModalOpen] = useState<boolean>(false);
   const [weekMovements, setWeekMovements] = useState<{
@@ -103,6 +107,17 @@ const HomeScreen: React.FC<IHomeScreen> = () => {
         today: orderBy(today, ['date'], ['desc']),
         restOfWeek: orderBy(restOfWeek, ['date'], ['desc']),
       });
+
+      async function updateData() {
+        const fromDate = fromDateToUnix(
+          moment(new Date()).subtract(6, 'day').toDate(),
+        ); // 2 meses antes de la fecha de hoy
+        const toDate = fromDateToUnix(new Date());
+        const dbData = await getReportData(fromDate, toDate, user.id);
+        const chartData: any = convertToMonthOrDayData(dbData, 'day');
+        if (chartData[2]) setChartData(chartData[2]);
+      }
+      updateData();
     }
   }, [movementList]);
 
@@ -120,7 +135,7 @@ const HomeScreen: React.FC<IHomeScreen> = () => {
         <View style={{ flex: 1 }}>
           <Header user_name={user.name} />
           <CustomLineChart
-            data={homeChartData}
+            data={chartData}
             titles={['Gastos', 'Ingresos', 'Fujo']}
           />
           <ScrollView>
@@ -192,3 +207,6 @@ const HomeScreen: React.FC<IHomeScreen> = () => {
 };
 
 export default HomeScreen;
+function setHomeChartData(arg0: any) {
+  throw new Error('Function not implemented.');
+}

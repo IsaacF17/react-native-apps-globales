@@ -2,10 +2,17 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
+    flexDirection: 'column',
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#161d1d',
   },
-  title: {},
+  title: {
+    fontSize: 30,
+    marginBottom: 15,
+    color: '#989C96',
+  },
   logo: {
     flex: 1,
     height: 120,
@@ -14,22 +21,22 @@ export default StyleSheet.create({
     margin: 30,
   },
   input: {
-    height: 48,
+    height: 40,
+    width: 250,
+    textAlign: 'center',
     borderRadius: 5,
     overflow: 'hidden',
     backgroundColor: 'white',
-    marginTop: 10,
+    marginTop: 25,
     marginBottom: 10,
-    marginLeft: 30,
-    marginRight: 30,
     paddingLeft: 16,
+    backgroundColor: '#E8EEF2',
   },
   button: {
-    backgroundColor: '#788eec',
-    marginLeft: 30,
-    marginRight: 30,
+    backgroundColor: '#415A77',
     marginTop: 20,
     height: 48,
+    width: 150,
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
@@ -39,18 +46,18 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  footerView: {
-    flex: 1,
-    alignItems: 'center',
-    marginTop: 20,
-  },
   footerText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#2e2e2d',
+    marginTop: 15,
+    color: '#989C96',
   },
   footerLink: {
-    color: '#788eec',
+    color: '#77B6EA',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
+  },
+  error: {
+    color: 'red',
   },
 });

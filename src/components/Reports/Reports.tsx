@@ -1,7 +1,8 @@
 import RNDateTimePicker from '@react-native-community/datetimepicker';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { SafeAreaView, View, Text, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements';
+import GlobalContext from '../../contexts/GlobalContext';
 import { getReportData } from '../../firebase/Reports';
 import useToggleButtonGroup, {
   IUseToggleButtonGroupReturn,
@@ -18,6 +19,8 @@ import { DatePickers } from './DatePickers/DatePickers';
 import styles from './styles';
 
 export const Reports = () => {
+  const { user } = useContext(GlobalContext);
+
   const [ToggleButtonGroup, selectedTypes]: IUseToggleButtonGroupReturn =
     useToggleButtonGroup({
       buttons: ['Ingresos', 'Gastos'],
@@ -71,6 +74,7 @@ export const Reports = () => {
       const dbData = await getReportData(
         fromDateToUnix(fromDate),
         fromDateToUnix(toDate),
+        user,
       );
       if (dbData) {
         let chartData: any = null;

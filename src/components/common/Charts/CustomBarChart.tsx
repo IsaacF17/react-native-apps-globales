@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Dimensions } from 'react-native';
-import { BarChart, LineChart } from 'react-native-chart-kit';
+import { BarChart } from 'react-native-chart-kit';
 
 interface IChartProps {
   data: any;
@@ -22,18 +22,18 @@ export const CustomBarChart = (props: IChartProps) => {
             height={200}
             yAxisLabel="₡"
             yAxisSuffix=""
-            yAxisInterval={1} // optional, defaults to 1
+            yAxisInterval={2} // optional, defaults to 1
             chartConfig={{
               backgroundGradientFrom: '#2B7C85',
               backgroundGradientTo: '#87ACA3',
               decimalPlaces: 0, // optional, defaults to 2dp
-              color: (opacity = 1) => `#FBE5C8`,
+              color: (opacity = 1) => `#183339`,
               labelColor: (opacity = 1) => `#e5ebec`,
               style: {
                 borderRadius: 16,
               },
             }}
-            yLabelsOffset={5}
+            yLabelsOffset={10}
             style={{
               marginVertical: 8,
               borderRadius: 12,
