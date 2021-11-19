@@ -1,12 +1,15 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Avatar, Text } from 'react-native-elements';
-
 import styles from './styles';
 
-const Header = () => (
+interface IHeaderProps {
+  user_name: string;
+}
+
+const Header = (props: IHeaderProps) => (
   <View style={styles.header}>
-    <Text h3>{"You're not Spiderman"}</Text>
+    <Text h3>{`Hola, ${props.user_name}`}</Text>
     <Avatar
       size="medium"
       rounded

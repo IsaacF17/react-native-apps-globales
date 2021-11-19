@@ -31,6 +31,12 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 5,
   },
+  category_container: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
   iconContainer: {
     justifyContent: 'center',
     alignItems: 'center',

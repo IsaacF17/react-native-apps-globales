@@ -7,6 +7,7 @@ export interface IGlobalContextData {
   movementList: Array<IMovement>;
   expiredMovements: Array<IScheduledMovement>;
   categoriesList: Array<ICategory>;
+  homeChartData: Array<any>;
   user?: any;
 }
 
@@ -21,6 +22,7 @@ export interface IGlobalContextDispatchers {
     React.SetStateAction<Array<IScheduledMovement>>
   >;
   setCategoriesList: React.Dispatch<React.SetStateAction<Array<ICategory>>>;
+  setHomeChartData: React.Dispatch<React.SetStateAction<Array<any>>>;
   setUser: (newState: any) => void;
 }
 

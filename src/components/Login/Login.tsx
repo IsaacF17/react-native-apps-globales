@@ -6,6 +6,10 @@ import { Button } from 'react-native-elements';
 import { checkUserData } from '../../firebase/Users';
 import { getCategories } from '../../firebase/Categories';
 import GlobalContext from '../../contexts/GlobalContext';
+import { fromDateToUnix } from '../../utils/unix';
+import moment from 'moment';
+import { getReportData } from '../../firebase/Reports';
+import { convertToMonthOrDayData } from '../../utils/reports';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const {
@@ -14,16 +18,24 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     formState: { errors },
   } = useForm();
 
-  const { setCategoriesList, setUser } = useContext(GlobalContext);
+  const { setCategoriesList, setUser, setHomeChartData } =
+    useContext(GlobalContext);
 
   const onSubmit = async (data: any) => {
     //data.email, data.pass
     const userResponse = await checkUserData('admin@mail.com', '123');
     if (userResponse) {
-      // setUser(userResponse);
-      setUser({ id: 'cufVpoJMKg6Xq1tKryo7' });
-      const categories = await getCategories(userResponse.user_id);
+      setUser(userResponse);
+      //setUser({ id: 'cufVpoJMKg6Xq1tKryo7' });
+      const categories = await getCategories(userResponse.id);
       setCategoriesList(categories);
+      const fromDate = fromDateToUnix(
+        moment(new Date()).subtract(2, 'month').toDate(),
+      ); // 2 meses antes de la fecha de hoy
+      const toDate = fromDateToUnix(new Date());
+      const dbData = await getReportData(fromDate, toDate);
+      const chartData: any = convertToMonthOrDayData(dbData, 'month');
+      setHomeChartData(chartData[2]);
       navigation.navigate('Home');
     }
   };

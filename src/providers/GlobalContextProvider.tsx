@@ -19,6 +19,7 @@ const GlobalContextProvider: React.FC = props => {
   >([]);
   const [movementList, setMovementList] = useState<Array<IMovement>>([]);
   const [categoriesList, setCategoriesList] = useState<Array<any>>([{}]);
+  const [homeChartData, setHomeChartData] = useState<any>({});
 
   const loadMovements = async () => {
     const response = await MovementService.getAllThisWeek(user.id);
@@ -60,6 +61,8 @@ const GlobalContextProvider: React.FC = props => {
     setCategoriesList,
     user,
     setUser,
+    homeChartData,
+    setHomeChartData,
   };
 
   return (
