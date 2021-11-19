@@ -123,6 +123,7 @@ const convertToChartData = (data: any) => {
     datasets: [
       { data: [...expenses], color: (opacity = 1) => `red` },
       { data: [...incomes], color: (opacity = 1) => `green` },
+      { data: [...moneyFlow], color: (opacity = 0.5) => `blue` },
     ],
   });
   Object.assign(chartObjectFlow, { datasets: [{ data: [...moneyFlow] }] });

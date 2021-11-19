@@ -7,7 +7,7 @@ import { formatShortDate } from '../../../utils/dates';
 import styles from './styles';
 
 export const List: React.FC<{ data: IMovement }> = props => {
-  const { date, name, type, value } = props.data;
+  const { date, name, type, value, iconCategoryName } = props.data;
 
   return (
     <>
@@ -16,7 +16,7 @@ export const List: React.FC<{ data: IMovement }> = props => {
           <Avatar
             rounded
             icon={{
-              name: 'spotify',
+              name: iconCategoryName || 'spotify',
               type: 'font-awesome',
               color: 'green',
             }}
