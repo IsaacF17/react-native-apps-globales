@@ -10,6 +10,7 @@ interface Movement {
   name: string;
   details?: string;
   value: number;
+  iconCategoryName: string;
 }
 
 export interface IMovement extends Movement {

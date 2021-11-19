@@ -78,6 +78,9 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
   const { categoriesList } = useContext(GlobalContext);
 
   const allCategories = categoriesList.map(cat => cat.name);
+  const icons = categoriesList.map(cat => cat.icon_name);
+
+  const [iconName, setIconName] = useState('');
 
   return (
     <View style={styles.mainContainer}>
@@ -155,6 +158,10 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
                   defaultButtonText="Selecciona una categoría"
                   onSelect={(selectedItem, index) => {
                     onChange(selectedItem);
+                    const icon = categoriesList.find(
+                      cat => cat.name === selectedItem,
+                    )?.icon_name;
+                    if (icon) setIconName(icon);
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
                     return selectedItem;
@@ -319,6 +326,8 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
             label="Guardar"
             onPress={handleSubmit(data => {
               const newDate = fromDateToUnix(datePickerState.currentDate, true);
+              data.iconCategoryName = iconName;
+              if (!data.details) data.details = '';
               if (toggleScheduleType === 'single') {
                 // @ts-ignore
                 delete data.periodicity;
@@ -333,7 +342,6 @@ const AddNewMovement: React.FC<IAddNewMovement> = props => {
                 data.nextDate = newDate;
                 if (isUpdating && scheduledMovement?.id) {
                   data.id = scheduledMovement.id;
-                  if (!data.details) data.details = '';
                   updateScheduledMovement(data);
                 } else {
                   submitNewScheduledMovement(data);

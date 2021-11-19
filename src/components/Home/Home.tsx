@@ -57,6 +57,7 @@ const HomeScreen: React.FC<IHomeScreen> = () => {
         type: movement.type,
         value: movement.value,
         date: movement.nextDate,
+        iconCategoryName: movement.iconCategoryName,
       }),
     );
 
