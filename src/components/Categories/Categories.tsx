@@ -81,59 +81,61 @@ const Categories: React.FC<ICategories> = props => {
   }, [currentSearch]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.mainContainer}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerTitle}>Categorías</Text>
-          <View style={styles.headerButtonContainer}>
-            <IconButton
-              name="plus"
-              style={styles.headerAddButton}
-              onPress={() => {
-                setCategory({});
-                setIsAddNewOverlayOpen(true);
+    <View style={{ flex: 1, backgroundColor: '#161d1d' }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.mainContainer}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerTitle}>Categorías</Text>
+            <View style={styles.headerButtonContainer}>
+              <IconButton
+                name="plus"
+                style={styles.headerAddButton}
+                onPress={() => {
+                  setCategory({});
+                  setIsAddNewOverlayOpen(true);
+                }}
+              />
+            </View>
+          </View>
+          <View style={styles.searchBarContainer}>
+            <SearchBar
+              placeholder="Escriba para buscar..."
+              onChangeText={(newSearch: string) => {
+                if (newSearch.length > 2) {
+                  setCurrentSearch(newSearch);
+                } else if (currentSearch.length) {
+                  setCurrentSearch('');
+                }
+              }}
+              onClearPress={() => {
+                if (currentSearch.length) {
+                  setCurrentSearch('');
+                }
               }}
             />
           </View>
+          <View style={styles.tableContainer}>
+            <SwipeableList
+              data={copyCategoriesList}
+              childComponent={CategoryItem}
+              leftContent={leftContent}
+              rightContent={rightContent}
+              leftFunction={toggleModal}
+              rightFunction={removeCategory}
+            />
+          </View>
         </View>
-        <View style={styles.searchBarContainer}>
-          <SearchBar
-            placeholder="Escriba para buscar..."
-            onChangeText={(newSearch: string) => {
-              if (newSearch.length > 2) {
-                setCurrentSearch(newSearch);
-              } else if (currentSearch.length) {
-                setCurrentSearch('');
-              }
-            }}
-            onClearPress={() => {
-              if (currentSearch.length) {
-                setCurrentSearch('');
-              }
-            }}
-          />
-        </View>
-        <View style={styles.tableContainer}>
-          <SwipeableList
-            data={copyCategoriesList}
-            childComponent={CategoryItem}
-            leftContent={leftContent}
-            rightContent={rightContent}
-            leftFunction={toggleModal}
-            rightFunction={removeCategory}
-          />
-        </View>
-      </View>
-      <Modal
-        style={styles.addNewCategoryModal}
-        isVisible={isAddNewOverlayOpen}
-        animationIn="slideInDown"
-        animationOut="slideOutDown"
-        backdropOpacity={0}
-        onBackdropPress={() => setIsAddNewOverlayOpen(false)}>
-        <AddNewCategory onSubmit={onSubmitNewCategory} data={category} />
-      </Modal>
-    </SafeAreaView>
+        <Modal
+          style={styles.addNewCategoryModal}
+          isVisible={isAddNewOverlayOpen}
+          animationIn="slideInDown"
+          animationOut="slideOutDown"
+          backdropOpacity={0}
+          onBackdropPress={() => setIsAddNewOverlayOpen(false)}>
+          <AddNewCategory onSubmit={onSubmitNewCategory} data={category} />
+        </Modal>
+      </SafeAreaView>
+    </View>
   );
 };
 

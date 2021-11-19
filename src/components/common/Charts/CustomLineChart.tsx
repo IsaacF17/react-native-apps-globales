@@ -4,14 +4,14 @@ import { LineChart } from 'react-native-chart-kit';
 
 interface IChartProps {
   data: any;
+  titles?: Array<string>;
   type?: string;
-  title: string;
 }
 
 const CustomLineChart = (props: IChartProps) => {
-  const { data, type, title } = props;
+  const { data, type, titles } = props;
 
-  if (data) Object.assign(data, { legend: [`${title}`] });
+  if (data) Object.assign(data, { legend: titles });
 
   return (
     <View>
@@ -24,12 +24,11 @@ const CustomLineChart = (props: IChartProps) => {
           //yAxisSuffix="k"
           yAxisInterval={1} // optional, defaults to 1
           chartConfig={{
-            backgroundColor: '#1D1A31',
-            backgroundGradientFrom: '#1D1A31',
-            backgroundGradientTo: '#1D1A31',
+            backgroundGradientFrom: '#2B7C85',
+            backgroundGradientTo: '#87ACA3',
             decimalPlaces: 0, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            color: (opacity = 1) => `#FBE5C8`,
+            labelColor: (opacity = 1) => `#e5ebec`,
             style: {
               borderRadius: 16,
             },
@@ -38,6 +37,7 @@ const CustomLineChart = (props: IChartProps) => {
             },
           }}
           bezier
+          yLabelsOffset={6}
           style={{
             marginVertical: 8,
             borderRadius: 12,

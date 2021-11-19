@@ -56,54 +56,64 @@ const ScheduledMovements: React.FC = () => {
   }, [scheduledMovements, currentSearch, selectedTypes]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.mainContainer}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerTitle}>Ingresos/Gastos Automáticos</Text>
-          <View style={styles.headerButtonContainer}>
-            <IconButton
-              name="plus"
-              style={styles.headerAddButton}
-              onPress={() => openAddNewModal()}
+    <View style={{ flex: 1, backgroundColor: '#161d1d' }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.mainContainer}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerTitle}>Ingresos/Gastos Automáticos</Text>
+            <View style={styles.headerButtonContainer}>
+              <IconButton
+                name="plus"
+                style={styles.headerAddButton}
+                onPress={() => openAddNewModal()}
+              />
+            </View>
+          </View>
+          <View style={styles.searchBarContainer}>
+            <SearchBar
+              placeholder="Escriba para buscar..."
+              onChangeText={(newSearch: string) => {
+                if (newSearch.length > 2) {
+                  setCurrentSearch(newSearch);
+                } else if (currentSearch.length) {
+                  setCurrentSearch('');
+                }
+              }}
+              onClearPress={() => {
+                if (currentSearch.length) {
+                  setCurrentSearch('');
+                }
+              }}
+            />
+          </View>
+          <View style={styles.filersContainer}>{ToggleButtonGroup}</View>
+          <View style={styles.tableHeader}>
+            <Text style={styles.tableHeadings}>Nombre</Text>
+            <Text style={[styles.tableHeadings, { marginHorizontal: 25 }]}>
+              Monto
+            </Text>
+            <Text style={styles.tableHeadings}>Próximo</Text>
+          </View>
+          <View style={styles.tableContainer}>
+            <SwipeableList
+              data={filteredList}
+              childComponent={MovementItem}
+              leftFunction={(data: IScheduledMovement) => {
+                setEditingScheduledMovement(
+                  scheduledMovements.find(
+                    movement => movement.id === data.id,
+                  ) ?? null,
+                );
+                openAddNewModal();
+              }}
+              rightFunction={(data: IScheduledMovement) => {
+                removeScheduledMovement(data.id);
+              }}
             />
           </View>
         </View>
-        <View style={styles.searchBarContainer}>
-          <SearchBar
-            placeholder="Escriba para buscar..."
-            onChangeText={(newSearch: string) => {
-              if (newSearch.length > 2) {
-                setCurrentSearch(newSearch);
-              } else if (currentSearch.length) {
-                setCurrentSearch('');
-              }
-            }}
-            onClearPress={() => {
-              if (currentSearch.length) {
-                setCurrentSearch('');
-              }
-            }}
-          />
-        </View>
-        <View style={styles.filersContainer}>{ToggleButtonGroup}</View>
-        <View style={styles.tableContainer}>
-          <SwipeableList
-            data={filteredList}
-            childComponent={MovementItem}
-            leftFunction={(data: IScheduledMovement) => {
-              setEditingScheduledMovement(
-                scheduledMovements.find(movement => movement.id === data.id) ??
-                  null,
-              );
-              openAddNewModal();
-            }}
-            rightFunction={(data: IScheduledMovement) => {
-              removeScheduledMovement(data.id);
-            }}
-          />
-        </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 };
 

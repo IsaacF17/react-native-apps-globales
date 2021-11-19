@@ -10,7 +10,7 @@ export default StyleSheet.create({
   modalView: {
     paddingVertical: 30,
     borderRadius: 15,
-    backgroundColor: '#2c2a4a',
+    backgroundColor: '#2A4D4E',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {

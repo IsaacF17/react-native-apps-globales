@@ -9,7 +9,7 @@ interface IHeaderProps {
 
 const Header = (props: IHeaderProps) => (
   <View style={styles.header}>
-    <Text h3>{`Hola, ${props.user_name}`}</Text>
+    <Text h3 style={styles.hi}>{`Hola, ${props.user_name}`}</Text>
     <Avatar
       size="medium"
       rounded

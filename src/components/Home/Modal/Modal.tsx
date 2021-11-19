@@ -20,7 +20,9 @@ const Modal: React.FC<IModal> = props => {
 
   return (
     <View style={styles.modalContent}>
-      <Text>Tienes movimientos pendientes:</Text>
+      <Text style={{ color: '#e5ebec', fontSize: 15 }}>
+        Tienes movimientos pendientes:
+      </Text>
       <View style={styles.modalListContainer}>
         <FlatList
           data={expiredMovements}

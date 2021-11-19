@@ -9,9 +9,9 @@ export default StyleSheet.create({
   },
   left_content: {
     backgroundColor: '#008FF5',
+    paddingTop: 6,
     height: 64,
     width: 75,
-    marginLeft: 7,
     borderRadius: 5,
   },
   left_content_title: {
@@ -20,9 +20,9 @@ export default StyleSheet.create({
   },
   right_content: {
     backgroundColor: '#DA3E52',
-    height: 65,
+    paddingTop: 5,
+    height: 64,
     width: 75,
-    marginRight: 7,
     borderRadius: 10,
   },
   right_content_title: {
