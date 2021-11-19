@@ -96,74 +96,87 @@ export const Reports = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.mainContainer}>
-        <View>
-          <Text style={styles.headerTitle}>Reportes</Text>
-        </View>
-        <DatePickers
-          showCalendar={setIsDatePickerOpen}
-          setActiveDatePicker={setActiveDatePicker}
-          clearDate={clearDate}
-          fromDateValue={fromDate}
-          toDateValue={toDate}
-        />
-        <View>
-          <Button title="Generar" onPress={test} buttonStyle={styles.button} />
-        </View>
-        <View style={styles.filersContainer}>{ToggleButtonGroup}</View>
-        <View style={{ flex: 1 }}>
-          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-            {chartsVisibility.chart_incomes && chartsVisibility.chart_expenses && (
-              <>
-                <CustomLineChart data={chartComparison} title="Flujo" />
-                <CustomBarChart
-                  data={chartFlow}
-                  type="expense"
-                  title="Gastos"
-                />
-              </>
-            )}
-            {chartsVisibility.chart_expenses &&
-              !chartsVisibility.chart_incomes && (
-                <CustomBarChart
-                  data={chartExpenses}
-                  type="expense"
-                  title="Gastos"
-                />
-              )}
-            {chartsVisibility.chart_incomes &&
-              !chartsVisibility.chart_expenses && (
-                <CustomBarChart
-                  data={chartIncomes}
-                  type="income"
-                  title="Ingresos"
-                />
-              )}
-          </ScrollView>
-        </View>
-        {isDatePickerOpen && (
-          <RNDateTimePicker
-            mode="date"
-            value={
-              activeDatePicker
-                ? activeDatePicker === 'from'
-                  ? fromDate
-                    ? fromDate
-                    : new Date()
-                  : toDate
-                  ? toDate
-                  : new Date()
-                : new Date()
-            }
-            testID="from-date"
-            onChange={setDate}
-            minimumDate={
-              fromDate && activeDatePicker === 'to' ? fromDate : null
-            }
+    <View style={{ flex: 1, backgroundColor: '#161d1d' }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.mainContainer}>
+          <View>
+            <Text style={styles.headerTitle}>Reportes</Text>
+          </View>
+          <DatePickers
+            showCalendar={setIsDatePickerOpen}
+            setActiveDatePicker={setActiveDatePicker}
+            clearDate={clearDate}
+            fromDateValue={fromDate}
+            toDateValue={toDate}
           />
-        )}
-      </View>
-    </SafeAreaView>
+
+          <View style={styles.filersContainer}>
+            <View style={{ flex: 2 }}>{ToggleButtonGroup}</View>
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <Button
+                title="Generar"
+                onPress={test}
+                buttonStyle={styles.button}
+              />
+            </View>
+          </View>
+          <View style={{ flex: 1 }}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+              {chartsVisibility.chart_incomes &&
+                chartsVisibility.chart_expenses && (
+                  <>
+                    <CustomLineChart
+                      data={chartComparison}
+                      titles={['Gastos', 'Ingresos', 'Fujo']}
+                    />
+                    <CustomBarChart
+                      data={chartFlow}
+                      type="expense"
+                      title="Gastos"
+                    />
+                  </>
+                )}
+              {chartsVisibility.chart_expenses &&
+                !chartsVisibility.chart_incomes && (
+                  <CustomBarChart
+                    data={chartExpenses}
+                    type="expense"
+                    title="Gastos"
+                  />
+                )}
+              {chartsVisibility.chart_incomes &&
+                !chartsVisibility.chart_expenses && (
+                  <CustomBarChart
+                    data={chartIncomes}
+                    type="income"
+                    title="Ingresos"
+                  />
+                )}
+            </ScrollView>
+          </View>
+          {isDatePickerOpen && (
+            <RNDateTimePicker
+              mode="date"
+              value={
+                activeDatePicker
+                  ? activeDatePicker === 'from'
+                    ? fromDate
+                      ? fromDate
+                      : new Date()
+                    : toDate
+                    ? toDate
+                    : new Date()
+                  : new Date()
+              }
+              testID="from-date"
+              onChange={setDate}
+              minimumDate={
+                fromDate && activeDatePicker === 'to' ? fromDate : null
+              }
+            />
+          )}
+        </View>
+      </SafeAreaView>
+    </View>
   );
 };

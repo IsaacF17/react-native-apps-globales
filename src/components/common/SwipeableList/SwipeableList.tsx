@@ -34,7 +34,7 @@ const defaultRightContent = {
 export const SwipeableList: React.FC<IProps> = props => {
   const { leftContent, rightContent } = props;
 
-  const scrollEnabled = props.disableNestedScrollView ?? false;
+  const scrollEnabled = props.disableNestedScrollView ?? true;
   return (
     <SwipeListView
       nestedScrollEnabled={scrollEnabled}
@@ -53,17 +53,21 @@ export const SwipeableList: React.FC<IProps> = props => {
               <TouchableHighlight
                 onPress={() => props.leftFunction?.(data.item)}>
                 <View style={styles.left_content}>
-                  <Text style={styles.left_content_title}>
-                    {(leftContent ?? defaultLeftContent)?.title}
-                  </Text>
-                  <Icon
-                    solid
-                    size={30}
-                    name={`${(leftContent ?? defaultLeftContent)?.icon_name}`}
-                    type="font-awesome"
-                    color="white"
-                    tvParallaxProperties={undefined}
-                  />
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.left_content_title}>
+                      {(leftContent ?? defaultLeftContent)?.title}
+                    </Text>
+                  </View>
+                  <View style={{ flex: 2 }}>
+                    <Icon
+                      solid
+                      size={30}
+                      name={`${(leftContent ?? defaultLeftContent)?.icon_name}`}
+                      type="font-awesome"
+                      color="white"
+                      tvParallaxProperties={undefined}
+                    />
+                  </View>
                 </View>
               </TouchableHighlight>
             )}
@@ -72,17 +76,23 @@ export const SwipeableList: React.FC<IProps> = props => {
               <TouchableHighlight
                 onPress={() => props.rightFunction?.(data.item)}>
                 <View style={styles.right_content}>
-                  <Text style={styles.right_content_title}>
-                    {(rightContent ?? defaultRightContent)?.title}
-                  </Text>
-                  <Icon
-                    solid
-                    size={30}
-                    name={`${(rightContent ?? defaultRightContent)?.icon_name}`}
-                    type="font-awesome"
-                    color="white"
-                    tvParallaxProperties={undefined}
-                  />
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.right_content_title}>
+                      {(rightContent ?? defaultRightContent)?.title}
+                    </Text>
+                  </View>
+                  <View style={{ flex: 2 }}>
+                    <Icon
+                      solid
+                      size={30}
+                      name={`${
+                        (rightContent ?? defaultRightContent)?.icon_name
+                      }`}
+                      type="font-awesome"
+                      color="white"
+                      tvParallaxProperties={undefined}
+                    />
+                  </View>
                 </View>
               </TouchableHighlight>
             )}

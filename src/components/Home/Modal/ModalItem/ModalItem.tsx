@@ -30,9 +30,7 @@ const ModalItem: React.FC<IModalItem> = props => {
           disableBuiltInState
           fillColor="#27a02b"
           iconStyle={{ borderColor: '#27a02b' }}
-          onPress={(isChecked: boolean) => {
-            setIsChecked(isChecked);
-          }}
+          onPress={() => setIsChecked(prevState => !prevState)}
         />
       </View>
     </TouchableWithoutFeedback>

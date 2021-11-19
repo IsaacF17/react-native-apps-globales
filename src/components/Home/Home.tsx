@@ -115,75 +115,79 @@ const HomeScreen: React.FC<IHomeScreen> = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
-        <Header user_name={user.name} />
-        <CustomLineChart data={homeChartData} title="Flujo" />
-        <ScrollView>
-          {weekMovements?.today?.length ? (
-            <>
-              <Text style={styles.sectionSubtitle}>Hoy:</Text>
-              <SwipeableList
-                data={weekMovements.today}
-                childComponent={List}
-                disableNestedScrollView
-                leftFunction={(data: IMovement) => {
-                  setEditingMovement(
-                    weekMovements.today.find(
-                      movement => movement.id === data.id,
-                    ) ?? null,
-                  );
-                  setIsModalOpen(true);
-                }}
-                rightFunction={(data: IMovement) =>
-                  removeSingleMovement(data.id)
-                }
-              />
-            </>
-          ) : null}
-          {weekMovements?.restOfWeek?.length ? (
-            <>
-              <Text
-                style={[
-                  styles.sectionSubtitle,
-                  { marginTop: weekMovements?.today?.length ? 15 : 0 },
-                ]}>
-                Esta semana:
-              </Text>
-              <SwipeableList
-                data={weekMovements.restOfWeek}
-                childComponent={List}
-                disableNestedScrollView
-                leftFunction={(data: IMovement) => {
-                  setEditingMovement(
-                    weekMovements.restOfWeek.find(
-                      movement => movement.id === data.id,
-                    ) ?? null,
-                  );
-                  setIsModalOpen(true);
-                }}
-                rightFunction={(data: IMovement) =>
-                  removeSingleMovement(data.id)
-                }
-              />
-            </>
-          ) : null}
-        </ScrollView>
-        <Modal
-          style={styles.modal}
-          isVisible={isPendingModalOpen}
-          // isVisible={true}
-          animationIn="slideInDown"
-          animationOut="slideOutDown"
-          backdropOpacity={0}
-          onBackdropPress={() => setIsPendingModalOpen(false)}>
-          <ModalContent
-            expiredMovements={expiredMovements}
-            handleSavePendingMovements={handleSavePendingMovements}
+    <View style={{ flex: 1, backgroundColor: '#161d1d' }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <Header user_name={user.name} />
+          <CustomLineChart
+            data={homeChartData}
+            titles={['Gastos', 'Ingresos', 'Fujo']}
           />
-        </Modal>
-      </View>
-    </SafeAreaView>
+          <ScrollView>
+            {weekMovements?.today?.length ? (
+              <>
+                <Text style={styles.sectionSubtitle}>Hoy:</Text>
+                <SwipeableList
+                  data={weekMovements.today}
+                  childComponent={List}
+                  disableNestedScrollView
+                  leftFunction={(data: IMovement) => {
+                    setEditingMovement(
+                      weekMovements.today.find(
+                        movement => movement.id === data.id,
+                      ) ?? null,
+                    );
+                    setIsModalOpen(true);
+                  }}
+                  rightFunction={(data: IMovement) =>
+                    removeSingleMovement(data.id)
+                  }
+                />
+              </>
+            ) : null}
+            {weekMovements?.restOfWeek?.length ? (
+              <>
+                <Text
+                  style={[
+                    styles.sectionSubtitle,
+                    { marginTop: weekMovements?.today?.length ? 15 : 0 },
+                  ]}>
+                  Esta semana:
+                </Text>
+                <SwipeableList
+                  data={weekMovements.restOfWeek}
+                  childComponent={List}
+                  disableNestedScrollView
+                  leftFunction={(data: IMovement) => {
+                    setEditingMovement(
+                      weekMovements.restOfWeek.find(
+                        movement => movement.id === data.id,
+                      ) ?? null,
+                    );
+                    setIsModalOpen(true);
+                  }}
+                  rightFunction={(data: IMovement) =>
+                    removeSingleMovement(data.id)
+                  }
+                />
+              </>
+            ) : null}
+          </ScrollView>
+          <Modal
+            style={styles.modal}
+            isVisible={isPendingModalOpen}
+            animationIn="slideInDown"
+            animationOut="slideOutDown"
+            backdropOpacity={0}
+            onBackdropPress={() => setIsPendingModalOpen(false)}>
+            <ModalContent
+              expiredMovements={expiredMovements}
+              handleSavePendingMovements={handleSavePendingMovements}
+            />
+          </Modal>
+        </View>
+      </SafeAreaView>
+    </View>
   );
 };
 

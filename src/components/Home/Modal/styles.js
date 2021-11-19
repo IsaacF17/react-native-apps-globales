@@ -7,7 +7,7 @@ export default StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 10,
     maxHeight: Dimensions.get('window').height * 0.75,
-    backgroundColor: '#bcbcbc',
+    backgroundColor: '#2A4D4E',
   },
   modalListContainer: {
     marginTop: 10,

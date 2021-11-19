@@ -14,7 +14,7 @@ export default StyleSheet.create({
   button: {},
   text: {
     fontSize: 25,
-    color: 'black',
+    color: '#e5ebec',
     fontWeight: 'bold',
     marginHorizontal: 5,
     borderBottomWidth: 2,
@@ -25,6 +25,6 @@ export default StyleSheet.create({
     color: 'transparent',
   },
   selectedTextStyle: {
-    borderColor: '#4287F5',
+    borderColor: '#6dbdb8',
   },
 });

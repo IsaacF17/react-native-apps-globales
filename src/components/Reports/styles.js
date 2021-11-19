@@ -2,27 +2,29 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   mainContainer: {
-    flex: 1
+    flex: 1,
+    marginTop: '6%',
   },
   headerTitle: {
     fontSize: 40,
     fontWeight: 'bold',
     alignSelf: 'center',
-    marginTop: '10%',
-    color: 'black'
+    color: '#e5ebec',
   },
   filersContainer: {
-    display: 'flex'
+    marginTop: -15,
+    flexDirection: 'row',
   },
   extras_container: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   button: {
-    width: 160,
-    alignSelf: 'flex-end',
-    marginRight: 30
-  }
+    width: '80%',
+    borderRadius: 10,
+    alignSelf: 'center',
+    marginEnd: 15,
+    backgroundColor: '#27a02a',
+  },
 });

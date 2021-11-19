@@ -24,16 +24,16 @@ export const CustomBarChart = (props: IChartProps) => {
             yAxisSuffix=""
             yAxisInterval={1} // optional, defaults to 1
             chartConfig={{
-              backgroundColor: '#1D1A31',
-              backgroundGradientFrom: '#374A67',
-              backgroundGradientTo: '#4E4F6A',
+              backgroundGradientFrom: '#2B7C85',
+              backgroundGradientTo: '#87ACA3',
               decimalPlaces: 0, // optional, defaults to 2dp
-              color: (opacity = 3) => `rgba(255, 255, 255, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              color: (opacity = 1) => `#FBE5C8`,
+              labelColor: (opacity = 1) => `#e5ebec`,
               style: {
                 borderRadius: 16,
               },
             }}
+            yLabelsOffset={5}
             style={{
               marginVertical: 8,
               borderRadius: 12,

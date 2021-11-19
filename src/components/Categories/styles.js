@@ -15,6 +15,7 @@ export default StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     alignSelf: 'center',
+    color: '#e5ebec',
   },
   headerButtonContainer: {
     flex: 1,
